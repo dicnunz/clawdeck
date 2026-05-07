@@ -22,6 +22,16 @@ test("sanitize redacts secret-shaped keys and personal strings", () => {
   assert.equal(result.safe, "ollama/qwen2.5-coder:7b");
 });
 
+test("sanitize redacts macOS private var home path aliases", () => {
+  const result = sanitize({
+    direct: "/var/folders/demo/home/.openclaw/workspace",
+    privateAlias: "/private/var/folders/demo/home/.openclaw/workspace"
+  }, { home: "/var/folders/demo/home" });
+
+  assert.equal(result.direct, "$HOME/.openclaw/workspace");
+  assert.equal(result.privateAlias, "$HOME/.openclaw/workspace");
+});
+
 test("buildSnapshot keeps public setup summary", () => {
   const snapshot = buildSnapshot({
     agents: {

@@ -10,6 +10,7 @@ clawdeck adopt
 clawdeck apply --yes
 clawdeck drill
 clawdeck smoke
+clawdeck handoff
 clawdeck audit
 open clawdeck.report.html
 ```

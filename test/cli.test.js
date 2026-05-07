@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { runCli } from "../src/cli.js";
 
-test("help exposes adopt, drill, and smoke commands", async () => {
+test("help exposes adopt, drill, smoke, and handoff commands", async () => {
   let output = "";
   await runCli(["help"], {
     stdout: {
@@ -15,5 +15,6 @@ test("help exposes adopt, drill, and smoke commands", async () => {
   assert.match(output, /clawdeck adopt/);
   assert.match(output, /clawdeck drill/);
   assert.match(output, /clawdeck smoke/);
+  assert.match(output, /clawdeck handoff/);
   assert.match(output, /no-wifi readiness/);
 });

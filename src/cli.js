@@ -7,6 +7,7 @@ import { renderAuditCli, renderDrillCli, runAudit } from "./audit.js";
 import { applyLocalProfile, formatApplyCli } from "./apply.js";
 import { adoptWorkspace, formatAdoptCli } from "./adopt.js";
 import { formatSmokeCli, runSmoke } from "./smoke.js";
+import { buildHandoff, formatHandoffCli } from "./handoff.js";
 
 const HELP = `clawdeck
 
@@ -18,6 +19,7 @@ Usage:
   clawdeck audit [--out report.md] [--html report.html] [--json audit.json] [--card card.svg] [--no-write]
   clawdeck drill
   clawdeck smoke [--model ollama/name] [--home dir] [--timeout ms] [--no-openclaw]
+  clawdeck handoff [--home dir] [--no-checks]
   clawdeck doctor [--json]
   clawdeck snapshot [--out file]
   clawdeck help
@@ -30,6 +32,7 @@ Commands:
   audit     Score the local agent stack and write a shareable report/card.
   drill     Run the no-wifi readiness gate without writing artifacts.
   smoke     Run an actual local model reply through Ollama and OpenClaw.
+  handoff   Print a Codex Mac app local-mode handoff brief.
   doctor    Check Node, OpenClaw, Ollama, gateway, and local config health.
   snapshot  Write a redacted OpenClaw setup snapshot safe to share.
 `;
@@ -120,6 +123,15 @@ export async function runCli(argv, io = process) {
       openclaw: !parsed.flags.no_openclaw
     });
     io.stdout.write(formatSmokeCli(result));
+    return;
+  }
+
+  if (command === "handoff") {
+    const result = await buildHandoff({
+      home: stringFlag(parsed.flags.home),
+      checks: !parsed.flags.no_checks
+    });
+    io.stdout.write(formatHandoffCli(result));
     return;
   }
 

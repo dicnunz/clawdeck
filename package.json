@@ -22,6 +22,7 @@
     "audit": "node ./bin/clawdeck.js audit",
     "drill": "node ./bin/clawdeck.js drill",
     "smoke": "node ./bin/clawdeck.js smoke",
+    "handoff": "node ./bin/clawdeck.js handoff",
     "doctor": "node ./bin/clawdeck.js doctor",
     "snapshot": "node ./bin/clawdeck.js snapshot --out examples/local.snapshot.json"
   },

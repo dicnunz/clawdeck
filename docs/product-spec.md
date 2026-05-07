@@ -18,8 +18,9 @@ Builders who already use OpenClaw, Codex, or Ollama and want local models to fee
 2. Run `clawdeck apply --yes` to back up and activate the local Ollama model path while preserving existing providers/plugins/auth.
 3. Run `clawdeck drill` to check readiness.
 4. Run `clawdeck smoke` to prove actual local inference through Ollama and OpenClaw.
-5. Use `CLAWDECK.md` as the local-mode contract from OpenClaw or Codex.
-6. Run `clawdeck audit` when a shareable report is useful.
+5. Run `clawdeck handoff` when opening the same workspace in Codex Mac app.
+6. Use `CLAWDECK.md` as the local-mode contract from OpenClaw or Codex.
+7. Run `clawdeck audit` when a shareable report is useful.
 
 ## Differentiator
 
@@ -44,5 +45,6 @@ Clawdeck is not another agent framework and not a static scaffold. It is a local
 - The active default model aliases are Ollama-only.
 - `clawdeck drill` returns a clear ready/blocked verdict and next local command.
 - `clawdeck smoke` proves a local model reply through Ollama and OpenClaw inference.
+- `clawdeck handoff` prints a Codex-ready local-mode brief from the current workspace.
 - `clawdeck audit` produces Markdown, HTML, JSON, and SVG report outputs.
 - Public reports avoid auth state, private paths, and raw config dumps.

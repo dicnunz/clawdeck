@@ -15,6 +15,7 @@ npx github:dicnunz/clawdeck adopt
 npx github:dicnunz/clawdeck apply --yes
 npx github:dicnunz/clawdeck drill
 npx github:dicnunz/clawdeck smoke
+npx github:dicnunz/clawdeck handoff
 ```
 
 Or point it at a specific project/workspace:
@@ -34,6 +35,7 @@ You get:
 - no hosted model fallback in the active model path
 - a no-wifi readiness drill
 - a real local-model smoke test through Ollama and OpenClaw inference
+- a Codex Mac handoff brief for opening the same workspace in Codex
 - optional redacted Markdown/HTML/JSON/SVG audit outputs
 
 That is the point: Clawdeck turns local mode into something you can adopt, verify, and keep using inside your normal setup.
@@ -45,6 +47,7 @@ clawdeck adopt [workspace] [--home dir] [--name name] [--force] [--no-agents-lin
 clawdeck apply [--workspace dir] [--home dir] [--yes]
 clawdeck drill
 clawdeck smoke [--model ollama/name] [--home dir] [--timeout ms] [--no-openclaw]
+clawdeck handoff [--home dir] [--no-checks]
 clawdeck audit --out report.md --html report.html --json audit.json --card card.svg
 clawdeck local [dir] [--name name] [--force]
 clawdeck doctor [--json]
@@ -56,6 +59,8 @@ clawdeck snapshot --out setup.json
 `apply` backs up `~/.openclaw/openclaw.json`, points the active default model setup at local Ollama models, and preserves existing providers/plugins/auth/gateway settings.
 
 `drill` checks whether the local path is ready. `smoke` goes further and asks the selected local model to reply through Ollama and OpenClaw inference.
+
+`handoff` prints a compact brief you can paste into Codex Mac app so Codex uses the same `CLAWDECK.md` local-mode contract instead of treating the folder as a random repo.
 
 ## Example Output
 

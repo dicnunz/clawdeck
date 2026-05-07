@@ -25,10 +25,11 @@ npx github:dicnunz/clawdeck adopt
 npx github:dicnunz/clawdeck apply --yes
 npx github:dicnunz/clawdeck drill
 npx github:dicnunz/clawdeck smoke
+npx github:dicnunz/clawdeck handoff
 ```
 
 GitHub: https://github.com/dicnunz/clawdeck
 
 ## Resume Bullet
 
-Built Clawdeck, an open-source Node CLI that adopts existing OpenClaw/Codex workspaces into a verified local-model mode with backed-up config apply, preserved provider state, Ollama/OpenClaw smoke tests, offline drill gates, polished local audit reports, tests, schemas, CI, and source-checked product claims.
+Built Clawdeck, an open-source Node CLI that adopts existing OpenClaw/Codex workspaces into a verified local-model mode with backed-up config apply, preserved provider state, Ollama/OpenClaw smoke tests, Codex handoff briefs, offline drill gates, polished local audit reports, tests, schemas, CI, and source-checked product claims.

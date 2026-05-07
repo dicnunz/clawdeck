@@ -74,11 +74,24 @@ function isSecretKey(key) {
 
 function redactString(value, home) {
   if (value === null || value === undefined) return value;
-  return value
-    .replaceAll(home, "$HOME")
-    .replace(EMAIL, "[email-redacted]");
+  let redacted = String(value);
+  for (const candidate of homePathVariants(home)) {
+    redacted = redacted.replaceAll(candidate, "$HOME");
+  }
+  return redacted.replace(EMAIL, "[email-redacted]");
 }
 
 export function redactText(value, home = os.homedir()) {
   return redactString(String(value), home);
+}
+
+function homePathVariants(home) {
+  const variants = new Set([home]);
+  if (home.startsWith("/var/")) {
+    variants.add(`/private${home}`);
+  }
+  if (home.startsWith("/private/var/")) {
+    variants.add(home.slice("/private".length));
+  }
+  return [...variants].filter(Boolean).sort((left, right) => right.length - left.length);
 }

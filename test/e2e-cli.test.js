@@ -7,7 +7,7 @@ import { spawnSync } from "node:child_process";
 
 const BIN = path.resolve("bin", "clawdeck.js");
 
-test("CLI adopts, applies, and drills an existing OpenClaw workspace", async () => {
+test("CLI adopts, applies, drills, and prints a Codex handoff for an existing OpenClaw workspace", async () => {
   const root = await fs.mkdtemp(path.join(os.tmpdir(), "clawdeck-e2e-"));
   const home = path.join(root, "home");
   const workspace = path.join(home, ".openclaw", "workspace with spaces");
@@ -40,6 +40,12 @@ test("CLI adopts, applies, and drills an existing OpenClaw workspace", async () 
   assert.match(drilled.stdout, /Clawdeck offline drill:/);
   assert.match(drilled.stdout, /Workspace contract:/);
   assert.match(drilled.stdout, /Local-model defaults:/);
+
+  const handoff = run(["handoff", "--home", home], { cwd: workspace, env: { HOME: home } });
+  assert.match(handoff.stdout, /Clawdeck Codex handoff/);
+  assert.match(handoff.stdout, /Paste this into Codex Mac app/);
+  assert.match(handoff.stdout, /Read `CLAWDECK\.md` and `AGENTS\.md` first/);
+  assert.match(handoff.stdout, /Workspace: \$HOME\/\.openclaw\/workspace with spaces/);
 });
 
 function run(args, { cwd = process.cwd(), env = {} } = {}) {
