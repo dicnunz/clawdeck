@@ -2,6 +2,18 @@
 
 Use this for a short screen recording or launch thread.
 
+Published install path:
+
+```bash
+npx @dicnunz/clawdeck adopt
+npx @dicnunz/clawdeck apply --yes
+npx @dicnunz/clawdeck drill
+npx @dicnunz/clawdeck smoke
+npx @dicnunz/clawdeck handoff
+```
+
+Local checkout path:
+
 ```bash
 git clone https://github.com/dicnunz/clawdeck
 cd clawdeck

@@ -11,19 +11,25 @@ Once OpenClaw, Ollama, and the model weights are installed, local file/code work
 Adopt the OpenClaw workspace you already have:
 
 ```bash
-npx github:dicnunz/clawdeck adopt
-npx github:dicnunz/clawdeck apply --yes
-npx github:dicnunz/clawdeck drill
-npx github:dicnunz/clawdeck smoke
-npx github:dicnunz/clawdeck handoff
+npx @dicnunz/clawdeck adopt
+npx @dicnunz/clawdeck apply --yes
+npx @dicnunz/clawdeck drill
+npx @dicnunz/clawdeck smoke
+npx @dicnunz/clawdeck handoff
 ```
 
 Or point it at a specific project/workspace:
 
 ```bash
-npx github:dicnunz/clawdeck adopt .
-npx github:dicnunz/clawdeck apply --workspace . --yes
-npx github:dicnunz/clawdeck audit
+npx @dicnunz/clawdeck adopt .
+npx @dicnunz/clawdeck apply --workspace . --yes
+npx @dicnunz/clawdeck audit
+```
+
+If the scoped npm package is not published in your registry yet, use the GitHub installer:
+
+```bash
+npx github:dicnunz/clawdeck adopt
 ```
 
 You get:

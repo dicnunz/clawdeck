@@ -48,3 +48,5 @@ Clawdeck is not another agent framework and not a static scaffold. It is a local
 - `clawdeck handoff` prints a Codex-ready local-mode brief from the current workspace.
 - `clawdeck audit` produces Markdown, HTML, JSON, and SVG report outputs.
 - Public reports avoid auth state, private paths, and raw config dumps.
+- The public package uses the scoped npm name `@dicnunz/clawdeck`, while the `clawdeck` binary remains the command users run.
+- Running readiness checks from the source checkout points users toward adopting a real workspace instead of mutating the product repo by mistake.

@@ -76,3 +76,22 @@ test("audit creates output directories", async () => {
   await fs.access(path.join(root, "nested", "audit.json"));
   await fs.access(path.join(root, "nested", "card.svg"));
 });
+
+test("drill in the source checkout routes users to adoption, not source scaffolding", async () => {
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), "clawdeck-source-audit-"));
+  const home = path.join(root, "home");
+  const cwd = path.join(root, "clawdeck");
+  await fs.mkdir(path.join(cwd, "src"), { recursive: true });
+  await fs.mkdir(path.join(cwd, "templates"), { recursive: true });
+  await fs.writeFile(path.join(cwd, "package.json"), JSON.stringify({ name: "@dicnunz/clawdeck" }));
+  await fs.writeFile(path.join(cwd, "src", "cli.js"), "");
+  await fs.writeFile(path.join(cwd, "templates", "CLAWDECK.md"), "");
+
+  const result = await runAudit({ home, cwd, write: false });
+  const rendered = renderDrillCli(result);
+
+  assert.equal(result.audit.checks.workspace.sourceCheckout, true);
+  assert.equal(result.audit.readiness.nextAction, "clawdeck adopt");
+  assert.match(rendered, /source checkout detected; adopt an OpenClaw workspace instead/);
+  assert.doesNotMatch(rendered, /clawdeck local \./);
+});

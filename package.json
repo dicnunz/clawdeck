@@ -1,10 +1,10 @@
 {
-  "name": "clawdeck",
-  "version": "0.1.0",
+  "name": "@dicnunz/clawdeck",
+  "version": "0.1.1",
   "description": "Local-model mode for existing OpenClaw and Codex workspaces.",
   "type": "module",
   "bin": {
-    "clawdeck": "./bin/clawdeck.js"
+    "clawdeck": "bin/clawdeck.js"
   },
   "files": [
     "bin",
@@ -25,7 +25,8 @@
     "smoke": "node ./bin/clawdeck.js smoke",
     "handoff": "node ./bin/clawdeck.js handoff",
     "doctor": "node ./bin/clawdeck.js doctor",
-    "snapshot": "node ./bin/clawdeck.js snapshot --out examples/local.snapshot.json"
+    "snapshot": "node ./bin/clawdeck.js snapshot --out examples/local.snapshot.json",
+    "prepublishOnly": "npm run verify"
   },
   "keywords": [
     "openclaw",
@@ -47,6 +48,9 @@
   "homepage": "https://github.com/dicnunz/clawdeck#readme",
   "author": "Nicholas Dunzelman",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "engines": {
     "node": ">=20"
   }

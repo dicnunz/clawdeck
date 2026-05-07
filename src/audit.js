@@ -2,9 +2,11 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 import { runDoctor } from "./doctor.js";
 import { buildSnapshot, redactText } from "./sanitize.js";
 
+const SOURCE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DEFAULT_REPORT = "clawdeck.report.md";
 const DEFAULT_HTML = "clawdeck.report.html";
 const DEFAULT_JSON = "clawdeck.audit.json";
@@ -151,12 +153,16 @@ function buildReadiness({ doctor, config, ollama, workspace, localOnly }) {
   const configuredCount = ollama.configured?.length ?? installedCount + (ollama.localConfiguredMissing?.length ?? 0);
   const openclawStatus = statusOf(doctor, "OpenClaw CLI");
   const gatewayStatus = statusOf(doctor, "Gateway");
+  const workspaceCommand = workspace.sourceCheckout ? "clawdeck adopt" : "clawdeck adopt .";
+  const workspaceDetail = workspace.sourceCheckout
+    ? "source checkout detected; adopt an OpenClaw workspace instead"
+    : `${workspace.score}/${workspace.max} command-center files present`;
   const gates = [
     {
       name: "Workspace contract",
       ok: workspace.score === workspace.max,
-      detail: `${workspace.score}/${workspace.max} command-center files present`,
-      command: "clawdeck local ."
+      detail: workspaceDetail,
+      command: workspaceCommand
     },
     {
       name: "Local-model defaults",
@@ -249,9 +255,11 @@ function buildFixes({ doctor, config, ollama, workspace, localOnly, readiness })
 
   if (workspace.missing.length > 0) {
     fixes.push({
-      title: "Scaffold workspace files",
-      command: "clawdeck adopt .",
-      why: "The command-center files make the setup portable and understandable."
+      title: workspace.sourceCheckout ? "Adopt an OpenClaw workspace" : "Adopt this workspace",
+      command: workspace.sourceCheckout ? "clawdeck adopt" : "clawdeck adopt .",
+      why: workspace.sourceCheckout
+        ? "This is the Clawdeck source repo. Run adoption against the OpenClaw workspace you actually use."
+        : "The command-center files make the setup portable and understandable."
     });
   }
 
@@ -450,7 +458,7 @@ function renderCard(audit) {
   <text x="86" y="300" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="700" fill="#111111">Offline drill: ${escapeXml(audit.readiness.status)}</text>
   <text x="86" y="338" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="24" font-weight="700" fill="#111111">Top fix: ${fix}</text>
   <text x="86" y="370" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="24" fill="#333333">${summary}</text>
-  <text x="86" y="520" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="800" fill="#111111">npx github:dicnunz/clawdeck adopt</text>
+  <text x="86" y="520" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="800" fill="#111111">npx @dicnunz/clawdeck adopt</text>
   <text x="86" y="558" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="18" fill="#555555">No auth, sessions, browser state, or private memory included.</text>
 </svg>
 `;
@@ -535,6 +543,7 @@ async function inspectWorkspace(cwd) {
   const expected = ["AGENTS.md", "CLAWDECK.md", "SOUL.md", "USER.md", "TOOLS.md", "HEARTBEAT.md", "OFFLINE.md"];
   const present = [];
   const missing = [];
+  const sourceCheckout = await isSourceCheckout(cwd);
 
   for (const file of expected) {
     try {
@@ -550,8 +559,24 @@ async function inspectWorkspace(cwd) {
     present,
     missing,
     score: present.length,
-    max: expected.length
+    max: expected.length,
+    sourceCheckout
   };
+}
+
+async function isSourceCheckout(cwd) {
+  const resolved = path.resolve(cwd);
+  if (resolved === SOURCE_ROOT) return true;
+
+  try {
+    const pkg = JSON.parse(await fs.readFile(path.join(resolved, "package.json"), "utf8"));
+    if (pkg?.name !== "clawdeck" && pkg?.name !== "@dicnunz/clawdeck") return false;
+    await fs.access(path.join(resolved, "src", "cli.js"));
+    await fs.access(path.join(resolved, "templates", "CLAWDECK.md"));
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 function inspectLocalOnly(config) {
