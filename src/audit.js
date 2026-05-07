@@ -458,7 +458,7 @@ function renderCard(audit) {
   <text x="86" y="300" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="700" fill="#111111">Offline drill: ${escapeXml(audit.readiness.status)}</text>
   <text x="86" y="338" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="24" font-weight="700" fill="#111111">Top fix: ${fix}</text>
   <text x="86" y="370" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="24" fill="#333333">${summary}</text>
-  <text x="86" y="520" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="800" fill="#111111">npx @dicnunz/clawdeck adopt</text>
+  <text x="86" y="520" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="800" fill="#111111">npx @nicdunz/clawdeck adopt</text>
   <text x="86" y="558" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="18" fill="#555555">No auth, sessions, browser state, or private memory included.</text>
 </svg>
 `;
@@ -570,7 +570,7 @@ async function isSourceCheckout(cwd) {
 
   try {
     const pkg = JSON.parse(await fs.readFile(path.join(resolved, "package.json"), "utf8"));
-    if (pkg?.name !== "clawdeck" && pkg?.name !== "@dicnunz/clawdeck") return false;
+    if (pkg?.name !== "clawdeck" && pkg?.name !== "@nicdunz/clawdeck") return false;
     await fs.access(path.join(resolved, "src", "cli.js"));
     await fs.access(path.join(resolved, "templates", "CLAWDECK.md"));
     return true;

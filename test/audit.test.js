@@ -83,7 +83,7 @@ test("drill in the source checkout routes users to adoption, not source scaffold
   const cwd = path.join(root, "clawdeck");
   await fs.mkdir(path.join(cwd, "src"), { recursive: true });
   await fs.mkdir(path.join(cwd, "templates"), { recursive: true });
-  await fs.writeFile(path.join(cwd, "package.json"), JSON.stringify({ name: "@dicnunz/clawdeck" }));
+  await fs.writeFile(path.join(cwd, "package.json"), JSON.stringify({ name: "@nicdunz/clawdeck" }));
   await fs.writeFile(path.join(cwd, "src", "cli.js"), "");
   await fs.writeFile(path.join(cwd, "templates", "CLAWDECK.md"), "");
 

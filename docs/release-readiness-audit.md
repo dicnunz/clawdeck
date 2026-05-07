@@ -16,13 +16,13 @@ Turn the local-model Codex/OpenClaw setup into a polished, non-gimmicky product 
 | Existing OpenClaw config is preserved | `clawdeck apply` | `src/apply.js` merges local Ollama defaults while preserving existing providers, plugins, auth, gateway, and agent runtime fields. |
 | Actual local inference is proven | `clawdeck smoke` | `src/smoke.js` runs both `ollama run <model>` and `openclaw infer model run --model ollama/... --prompt "Reply with exactly: ok"`. |
 | Readiness is not hand-waved | `clawdeck drill`, `clawdeck audit` | `src/audit.js` checks workspace files, active local defaults, Ollama reachability, installed model weights, OpenClaw CLI, and gateway status. |
-| Shareable public surface exists | HTML/Markdown/JSON/SVG audit outputs, launch kit, release notes | `clawdeck audit` renders report artifacts; `docs/launch-kit.md` and `docs/release-notes/v0.1.1.md` are launch-ready. |
+| Shareable public surface exists | HTML/Markdown/JSON/SVG audit outputs, launch kit, release notes | `clawdeck audit` renders report artifacts; `docs/launch-kit.md` and `docs/release-notes/v0.1.2.md` are launch-ready. |
 | Safety and privacy are explicit | `docs/security.md`, `src/sanitize.js`, `clawdeck snapshot` | Snapshot/report paths redact secret-shaped keys, email addresses, and home paths, and docs state which private OpenClaw state is not copied. |
 | Tests cover behavior, not just docs | `test/*.test.js` | Tests cover adopt, apply merge/backup, audit/drill, handoff, CLI help, init, sanitize/snapshot, smoke runner behavior, and an actual CLI temp-home flow. |
 | Public repo is credible | GitHub Actions CI | `.github/workflows/ci.yml` runs `npm run verify` on Node 20 and 22. |
-| Public distribution avoids the taken npm name | scoped package `@dicnunz/clawdeck` | The unscoped `clawdeck` npm package is owned by another maintainer, so this package uses the available scoped name, `publishConfig.access=public`, and a `prepublishOnly` verification guard. |
+| Public distribution avoids the taken npm name | scoped package `@nicdunz/clawdeck` | The unscoped `clawdeck` npm package is owned by another maintainer, and the signed-in npm account is `nicdunz`, so this package uses the matching user scope, `publishConfig.access=public`, and a `prepublishOnly` verification guard. |
 | Source-checkout first run is clear | `clawdeck drill` source checkout detection | Running `drill` from the Clawdeck source repo now tells users to adopt an OpenClaw workspace instead of suggesting source-repo scaffolding. |
-| Public release path is known | `docs/github-release-runbook.md` | Runbook covers the already-public GitHub repo, `v0.1.1` tag/release, scoped npm publish, and proof commands. |
+| Public release path is known | `docs/github-release-runbook.md` | Runbook covers the already-public GitHub repo, `v0.1.2` tag/release, scoped npm publish, and proof commands. |
 
 ## Verified Locally
 
@@ -37,11 +37,11 @@ These checks were run locally during release prep:
 - temp existing-workspace flow: `adopt -> apply -> openclaw config validate --json -> drill -> smoke`
 - real local smoke through installed Ollama and OpenClaw inference using `ollama/qwen3:4b-instruct`
 - public-claim source check against Codex CLI, OpenClaw, and Ollama docs
-- scoped npm name availability check for `@dicnunz/clawdeck`
+- scoped npm name availability check for `@nicdunz/clawdeck`
 
 ## Known Boundaries
 
-- The public GitHub repo and `v0.1.0` release already exist; the current 10/10 polish should ship as `v0.1.1` instead of retagging the old release.
+- The public GitHub repo and prior releases already exist; the current 10/10 polish should ship as `v0.1.2` instead of retagging an old release.
 - The scoped npm package still requires an approved `npm publish --access public`.
 - Browser visual QA of the generated `file://` HTML report was blocked by Browser Use URL policy in the earlier prep pass; the generated HTML/CSS and CLI artifact creation were verified, but not through in-app browser rendering.
 - The OpenClaw gateway on this Mac reported stopped/unhealthy during drill, which is a machine setup status, not a package failure. `clawdeck smoke` still passed through local OpenClaw inference.

@@ -21,15 +21,15 @@ It does not create a separate toy agent folder. It adopts your current OpenClaw 
 Try it:
 
 ```bash
-npx @dicnunz/clawdeck adopt
-npx @dicnunz/clawdeck apply --yes
-npx @dicnunz/clawdeck drill
-npx @dicnunz/clawdeck smoke
-npx @dicnunz/clawdeck handoff
+npx @nicdunz/clawdeck adopt
+npx @nicdunz/clawdeck apply --yes
+npx @nicdunz/clawdeck drill
+npx @nicdunz/clawdeck smoke
+npx @nicdunz/clawdeck handoff
 ```
 
 GitHub: https://github.com/dicnunz/clawdeck
-npm: https://www.npmjs.com/package/@dicnunz/clawdeck
+npm: https://www.npmjs.com/package/@nicdunz/clawdeck
 
 ## Resume Bullet
 

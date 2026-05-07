@@ -5,11 +5,11 @@ Use this for a short screen recording or launch thread.
 Published install path:
 
 ```bash
-npx @dicnunz/clawdeck adopt
-npx @dicnunz/clawdeck apply --yes
-npx @dicnunz/clawdeck drill
-npx @dicnunz/clawdeck smoke
-npx @dicnunz/clawdeck handoff
+npx @nicdunz/clawdeck adopt
+npx @nicdunz/clawdeck apply --yes
+npx @nicdunz/clawdeck drill
+npx @nicdunz/clawdeck smoke
+npx @nicdunz/clawdeck handoff
 ```
 
 Local checkout path:
