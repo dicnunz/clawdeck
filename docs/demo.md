@@ -6,26 +6,24 @@ Use this for a short screen recording or launch thread.
 git clone https://github.com/dicnunz/clawdeck
 cd clawdeck
 npm link
-clawdeck local ../my-local-codex
-cd ../my-local-codex
-clawdeck apply --workspace . --yes
+clawdeck adopt
+clawdeck apply --yes
+clawdeck drill
+clawdeck smoke
 clawdeck audit
-clawdeck drill
-```
-
-Show the offline contract and score:
-
-```bash
-sed -n '1,120p' OFFLINE.md
 open clawdeck.report.html
-sed -n '1,120p' clawdeck.report.md
-clawdeck drill
 ```
 
-Then show the generated config has no hosted model fallback:
+Show the local-mode contract:
 
 ```bash
-! rg "openai|anthropic|gemini|claude|gpt-" .openclaw/openclaw.template.json
+sed -n '1,160p' ~/.openclaw/workspace/CLAWDECK.md
 ```
 
-The point is simple: make OpenClaw feel like Codex while staying local-only once the app and model weights are installed.
+Show that the generated active defaults have no hosted fallback:
+
+```bash
+! rg "openai|anthropic|gemini|claude|gpt-" ~/.openclaw/workspace/.openclaw/openclaw.template.json
+```
+
+The point is simple: local models become a verified mode inside the OpenClaw/Codex workspace you already use.

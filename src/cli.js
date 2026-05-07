@@ -5,25 +5,31 @@ import { runDoctor } from "./doctor.js";
 import { writeSnapshot } from "./snapshot.js";
 import { renderAuditCli, renderDrillCli, runAudit } from "./audit.js";
 import { applyLocalProfile, formatApplyCli } from "./apply.js";
+import { adoptWorkspace, formatAdoptCli } from "./adopt.js";
+import { formatSmokeCli, runSmoke } from "./smoke.js";
 
 const HELP = `clawdeck
 
 Usage:
+  clawdeck adopt [workspace] [--home dir] [--name name] [--force] [--no-agents-link]
   clawdeck local [dir] [--name name] [--force]
   clawdeck apply [--workspace dir] [--home dir] [--yes]
   clawdeck init [dir] [--name name] [--force]
   clawdeck audit [--out report.md] [--html report.html] [--json audit.json] [--card card.svg] [--no-write]
   clawdeck drill
+  clawdeck smoke [--model ollama/name] [--home dir] [--timeout ms] [--no-openclaw]
   clawdeck doctor [--json]
   clawdeck snapshot [--out file]
   clawdeck help
 
 Commands:
-  local     Scaffold a local-only Codex-feeling OpenClaw workspace.
-  apply     Apply the local-only OpenClaw profile with backup.
+  adopt    Overlay Clawdeck into an existing OpenClaw/Codex workspace.
+  local     Scaffold a new local-model OpenClaw workspace.
+  apply     Apply the local-model OpenClaw profile with backup.
   init      Alias for local.
   audit     Score the local agent stack and write a shareable report/card.
   drill     Run the no-wifi readiness gate without writing artifacts.
+  smoke     Run an actual local model reply through Ollama and OpenClaw.
   doctor    Check Node, OpenClaw, Ollama, gateway, and local config health.
   snapshot  Write a redacted OpenClaw setup snapshot safe to share.
 `;
@@ -44,6 +50,18 @@ export async function runCli(argv, io = process) {
     return;
   }
 
+  if (command === "adopt") {
+    const result = await adoptWorkspace({
+      workspace: parsed.positionals[0],
+      home: stringFlag(parsed.flags.home),
+      name: stringFlag(parsed.flags.name),
+      force: Boolean(parsed.flags.force),
+      linkAgents: !parsed.flags.no_agents_link
+    });
+    io.stdout.write(formatAdoptCli(result));
+    return;
+  }
+
   if (command === "init" || command === "local") {
     const target = parsed.positionals[0] ?? parsed.flags.dir ?? ".";
     const result = await initWorkspace({
@@ -51,7 +69,7 @@ export async function runCli(argv, io = process) {
       name: parsed.flags.name,
       force: Boolean(parsed.flags.force)
     });
-    io.stdout.write(`Created ${result.created.length} local-only files in ${path.relative(process.cwd(), result.targetDir) || "."}\n`);
+    io.stdout.write(`Created ${result.created.length} local-mode files in ${path.relative(process.cwd(), result.targetDir) || "."}\n`);
     io.stdout.write("Next: cd into it, run `clawdeck apply --workspace . --yes`, pull the OFFLINE.md models, then run `clawdeck audit`.\n");
     return;
   }
@@ -91,6 +109,17 @@ export async function runCli(argv, io = process) {
   if (command === "drill") {
     const result = await runAudit({ write: false });
     io.stdout.write(renderDrillCli(result));
+    return;
+  }
+
+  if (command === "smoke") {
+    const result = await runSmoke({
+      home: stringFlag(parsed.flags.home),
+      model: stringFlag(parsed.flags.model),
+      timeout: numberFlag(parsed.flags.timeout) ?? 60000,
+      openclaw: !parsed.flags.no_openclaw
+    });
+    io.stdout.write(formatSmokeCli(result));
     return;
   }
 
@@ -136,6 +165,12 @@ function parseArgs(args) {
 
 function stringFlag(value) {
   return typeof value === "string" ? value : undefined;
+}
+
+function numberFlag(value) {
+  if (typeof value !== "string") return undefined;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : undefined;
 }
 
 function formatDoctor(report) {

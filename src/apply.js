@@ -48,7 +48,7 @@ export async function applyLocalProfile({
   return {
     applied: true,
     plan,
-    message: "Applied local-only OpenClaw profile."
+    message: "Applied local-model OpenClaw profile."
   };
 }
 
@@ -92,11 +92,17 @@ function mergeLocalProfile(existing, localProfile) {
     ...existing,
     agents: {
       ...(existing.agents ?? {}),
-      defaults: localProfile.agents.defaults
+      defaults: {
+        ...(existing.agents?.defaults ?? {}),
+        ...localProfile.agents.defaults
+      }
     },
     models: {
       ...(existing.models ?? {}),
-      providers: localProfile.models.providers
+      providers: {
+        ...(existing.models?.providers ?? {}),
+        ...localProfile.models.providers
+      }
     },
     tools: {
       ...(existing.tools ?? {}),
@@ -104,7 +110,10 @@ function mergeLocalProfile(existing, localProfile) {
     },
     plugins: {
       ...(existing.plugins ?? {}),
-      entries: localProfile.plugins.entries
+      entries: {
+        ...(existing.plugins?.entries ?? {}),
+        ...localProfile.plugins.entries
+      }
     }
   };
 }

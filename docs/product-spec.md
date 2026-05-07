@@ -6,45 +6,43 @@ Clawdeck
 
 ## Promise
 
-One command creates a local-model, no-wifi-after-setup OpenClaw/Ollama workspace that feels Codex-like after the required binaries and model weights are installed.
+Adopt an existing OpenClaw/Codex workspace and turn its active local path into a verified Ollama-backed mode for no-wifi-after-setup local file/code work.
 
 ## Audience
 
-Builders who like Codex's command-center feel but want a local-model OpenClaw setup that can keep doing local file/code work without wifi or per-token API cost.
+Builders who already use OpenClaw, Codex, or Ollama and want local models to feel like a real mode inside their normal setup instead of a separate demo folder.
 
 ## Core Loop
 
-1. Run `clawdeck local my-local-codex`.
-2. Pull the listed Ollama models while online.
-3. Run `clawdeck apply --workspace my-local-codex --yes` to back up and write the OpenClaw profile.
-4. Use the generated `OFFLINE.md`, `AGENTS.md`, and OpenClaw template as the local operating profile.
-5. Run `clawdeck audit` to verify local-only readiness.
-6. Run `clawdeck drill` before going offline.
-7. Fix one thing and rerun.
+1. Run `clawdeck adopt` in an existing setup.
+2. Run `clawdeck apply --yes` to back up and activate the local Ollama model path while preserving existing providers/plugins/auth.
+3. Run `clawdeck drill` to check readiness.
+4. Run `clawdeck smoke` to prove actual local inference through Ollama and OpenClaw.
+5. Use `CLAWDECK.md` as the local-mode contract from OpenClaw or Codex.
+6. Run `clawdeck audit` when a shareable report is useful.
 
 ## Differentiator
 
-Clawdeck is not another agent framework. It is an offline-first operating profile for OpenClaw: local-only model defaults, Codex-like workspace contract, approval gates, heartbeat queue, readiness score, offline drill gates, concrete fixes, and safe public snapshot.
+Clawdeck is not another agent framework and not a static scaffold. It is a local-mode adoption layer: it links into the workspace you already use, preserves your existing OpenClaw setup, verifies local model readiness, and smoke-tests actual local inference.
 
 ## Non-Goals
 
 - Do not copy auth state.
 - Do not manage paid model accounts.
 - Do not hide OpenClaw config behind magic.
+- Do not delete existing providers/plugins/auth to make the demo look pure.
 - Do not install background services without the user doing it explicitly.
 - Do not pretend a stack is healthy just because config files exist.
-- Do not silently add hosted model fallback to the generated workspace.
 - Do not claim local small models are equivalent to hosted frontier models.
 - Do not claim internet search, remote APIs, or account-bound tools work offline.
 
 ## Success Criteria
 
-- A user can understand the repo in under one minute.
-- The CLI runs with no dependencies beyond Node.
-- `clawdeck local` produces a generated config with only Ollama model aliases.
-- `clawdeck apply --yes` backs up existing OpenClaw config before writing the local-only profile.
-- `clawdeck audit` produces a score, Markdown report, HTML report, JSON, and SVG card.
+- `clawdeck adopt` can overlay an existing OpenClaw workspace without overwriting existing workspace files.
+- `AGENTS.md` gets a bounded Clawdeck pointer block so Codex/OpenClaw can see the local-mode contract.
+- `clawdeck apply --yes` backs up existing OpenClaw config and preserves existing providers/plugins/auth.
+- The active default model aliases are Ollama-only.
 - `clawdeck drill` returns a clear ready/blocked verdict and next local command.
-- A generated workspace has no personal details.
-- A snapshot redacts auth-shaped fields and local identity.
-- The GitHub page can stand alone as a resume artifact.
+- `clawdeck smoke` proves a local model reply through Ollama and OpenClaw inference.
+- `clawdeck audit` produces Markdown, HTML, JSON, and SVG report outputs.
+- Public reports avoid auth state, private paths, and raw config dumps.

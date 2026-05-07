@@ -2,6 +2,8 @@
 
 This is the evidence sheet behind Clawdeck's public claims.
 
+Checked on 2026-05-07 against the linked primary docs and a live local OpenClaw/Ollama smoke test.
+
 ## Verified Claims
 
 | Claim | Status | Source |
@@ -9,7 +11,7 @@ This is the evidence sheet behind Clawdeck's public claims.
 | Codex CLI is a local terminal coding agent, but requires ChatGPT sign-in or an API key for model access. | Supported | OpenAI Codex CLI docs: https://developers.openai.com/codex/cli |
 | OpenClaw has a local setup flow with model/auth setup, workspace files, gateway settings, daemon install, and health checks. | Supported | OpenClaw CLI setup reference: https://docs.openclaw.ai/start/wizard-cli-reference |
 | OpenClaw supports Ollama and local/self-hosted model providers. | Supported | OpenClaw FAQ: https://docs.openclaw.ai/help/faq |
-| OpenClaw's Ollama provider supports local-only mode and local model discovery from an Ollama instance. | Supported | OpenClaw Ollama provider docs: https://github.com/openclaw/openclaw/blob/main/docs/providers/ollama.md |
+| OpenClaw's Ollama provider supports local Ollama hosts, Ollama model refs, and direct `openclaw infer model run` smoke tests. | Supported | OpenClaw Ollama provider docs: https://github.com/openclaw/openclaw/blob/main/docs/providers/ollama.md |
 | Ollama can pull, run, list, and serve local models through its CLI. | Supported | Ollama CLI docs: https://docs.ollama.com/cli |
 | Ollama's OpenClaw integration can configure a provider, install/start the gateway daemon, and choose local or cloud models. | Supported | Ollama OpenClaw integration docs: https://docs.ollama.com/integrations/openclaw |
 
@@ -21,6 +23,7 @@ This is the evidence sheet behind Clawdeck's public claims.
 | "free" | "no per-token API bill for the local Ollama path" |
 | "Codex offline mode" | "Codex-feeling OpenClaw/Ollama workspace; not Codex-compatible and not an OpenAI product" |
 | "normal local-agent work does not need wifi" | "local files, shell, gateway workflows, and already-pulled Ollama models can work without wifi; web/search/account/cloud tasks cannot" |
+| "separate local Codex clone" | "adopted local-model mode inside an existing OpenClaw/Codex workspace" |
 
 ## Caveats
 
@@ -29,3 +32,4 @@ This is the evidence sheet behind Clawdeck's public claims.
 - Ollama web search and cloud models can require sign-in and network access.
 - Clawdeck does not install OpenClaw, install Ollama, pull model weights, or start the gateway automatically.
 - Clawdeck's `apply` command backs up and writes OpenClaw config, but users should still review the generated config before using it as their long-term setup.
+- Clawdeck preserves existing provider/plugin/auth config by design; it changes the active default model path, not the user's whole model universe.

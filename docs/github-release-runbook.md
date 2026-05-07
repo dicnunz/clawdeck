@@ -7,10 +7,16 @@ Do not run these commands without fresh approval from the repo owner.
 ## Preconditions
 
 - local branch: `main`
-- local tag: `v0.1.0`
+- local tag: `v0.1.0` points at the final release commit
 - working tree: clean
 - GitHub account: `dicnunz`
 - target repo: `dicnunz/clawdeck`
+
+If `v0.1.0` still points at an older local-only draft and has not been pushed, retag it after the final commit:
+
+```bash
+git tag -f v0.1.0
+```
 
 ## Commands
 
@@ -19,7 +25,7 @@ gh repo create dicnunz/clawdeck \
   --public \
   --source=. \
   --remote=origin \
-  --description "Local-model Codex-feeling OpenClaw setup for Ollama." \
+  --description "Local-model mode for your existing OpenClaw/Codex workspace." \
   --push
 
 git push origin v0.1.0

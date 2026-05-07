@@ -1,7 +1,7 @@
 {
   "name": "clawdeck",
   "version": "0.1.0",
-  "description": "Local-model Codex-feeling OpenClaw setup for Ollama.",
+  "description": "Local-model mode for existing OpenClaw and Codex workspaces.",
   "type": "module",
   "bin": {
     "clawdeck": "./bin/clawdeck.js"
@@ -16,10 +16,12 @@
   ],
   "scripts": {
     "test": "node --test",
+    "adopt": "node ./bin/clawdeck.js adopt",
     "local": "node ./bin/clawdeck.js local",
     "apply": "node ./bin/clawdeck.js apply",
     "audit": "node ./bin/clawdeck.js audit",
     "drill": "node ./bin/clawdeck.js drill",
+    "smoke": "node ./bin/clawdeck.js smoke",
     "doctor": "node ./bin/clawdeck.js doctor",
     "snapshot": "node ./bin/clawdeck.js snapshot --out examples/local.snapshot.json"
   },

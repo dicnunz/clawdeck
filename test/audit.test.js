@@ -21,11 +21,11 @@ test("audit can run without writing artifacts or leaking the supplied home path"
   assert.equal(Object.keys(result.outputs).length, 0);
   assert.equal(JSON.stringify(result.audit).includes(home), false);
   assert.equal(result.audit.readiness.status, "blocked");
-  assert.equal(result.audit.readiness.gates.some((gate) => gate.name === "Local-only profile"), true);
+  assert.equal(result.audit.readiness.gates.some((gate) => gate.name === "Local-model defaults"), true);
   assert.match(renderDrillCli(result), /Clawdeck offline drill:/);
 });
 
-test("audit prefers workspace local-only template over home OpenClaw config", async () => {
+test("audit prefers workspace local-model template over home OpenClaw config", async () => {
   const root = await fs.mkdtemp(path.join(os.tmpdir(), "clawdeck-audit-template-"));
   const home = path.join(root, "home");
   const cwd = path.join(root, "workspace");
@@ -48,8 +48,8 @@ test("audit prefers workspace local-only template over home OpenClaw config", as
 
   assert.equal(result.audit.checks.openclawConfig.source, "workspace-template");
   assert.equal(result.audit.checks.localOnly.ok, true);
-  assert.equal(result.audit.summary.cloudFallback, "none");
-  assert.equal(result.audit.readiness.gates.find((gate) => gate.name === "Local-only profile").ok, true);
+  assert.equal(result.audit.summary.activeHostedFallback, "none");
+  assert.equal(result.audit.readiness.gates.find((gate) => gate.name === "Local-model defaults").ok, true);
 });
 
 test("audit creates output directories", async () => {

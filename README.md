@@ -1,88 +1,94 @@
 # Clawdeck
 
-Local-model, no-wifi-after-setup, Codex-feeling workspace for OpenClaw and Ollama.
+Local-model mode for the OpenClaw/Codex setup you already use.
 
-Clawdeck gives you the part people like about Codex: a compact command-center workspace with clear operating rules, local model defaults, approval gates, and a simple readiness check.
+Clawdeck is not another agent framework and it is not a separate worse Codex clone. It is a thin operating layer that adopts your existing OpenClaw workspace, makes the active model path local-first through Ollama, and gives both OpenClaw and Codex a shared `CLAWDECK.md` local-mode contract.
 
-It does not replace Codex, modify Codex, or ship an OpenAI product. It packages a no-cloud OpenClaw profile that feels Codex-like while running on local Ollama models.
+Once OpenClaw, Ollama, and the model weights are installed, local file/code work can keep running without wifi. Internet search, remote APIs, account auth, cloud models, and some tool-heavy workflows still need network access.
 
-Once OpenClaw, Ollama, and the model weights are installed, normal local file/code work can run without wifi. Internet search, remote APIs, account auth, cloud models, and some tool-heavy workflows still need network access.
+## Quick Start
 
-Run one command to create the local setup:
+Adopt the OpenClaw workspace you already have:
 
 ```bash
-npx github:dicnunz/clawdeck local my-local-codex
+npx github:dicnunz/clawdeck adopt
+npx github:dicnunz/clawdeck apply --yes
+npx github:dicnunz/clawdeck drill
+npx github:dicnunz/clawdeck smoke
 ```
 
-Then run:
+Or point it at a specific project/workspace:
 
 ```bash
-cd my-local-codex
+npx github:dicnunz/clawdeck adopt .
 npx github:dicnunz/clawdeck apply --workspace . --yes
 npx github:dicnunz/clawdeck audit
-npx github:dicnunz/clawdeck drill
 ```
 
 You get:
 
-- a clean OpenClaw/Ollama workspace starter
-- a safe apply step that backs up `~/.openclaw/openclaw.json`
-- a compact `AGENTS.md` operating contract
-- local-only OpenClaw model defaults
-- no hosted model fallback in the generated config
-- `OFFLINE.md`, `HEARTBEAT.md`, `SOUL.md`, `USER.md`, and `TOOLS.md`
-- a `0-100` local readiness score
+- `CLAWDECK.md`: the local-mode switchboard for OpenClaw and Codex
+- a non-destructive `AGENTS.md` pointer so existing agents see the local contract
+- a backed-up OpenClaw config apply
+- active Ollama defaults without deleting existing providers/plugins/auth
+- no hosted model fallback in the active model path
 - a no-wifi readiness drill
-- concrete fix commands
-- optional redacted Markdown/HTML/JSON/card outputs
+- a real local-model smoke test through Ollama and OpenClaw inference
+- optional redacted Markdown/HTML/JSON/SVG audit outputs
 
-It is for people who want the "my laptop is an agent command center" feel without per-token API charges for the local model path. Hardware, electricity, optional cloud models, and web/search features are outside that claim.
+That is the point: Clawdeck turns local mode into something you can adopt, verify, and keep using inside your normal setup.
 
-## Quick Start
-
-```bash
-npx github:dicnunz/clawdeck local my-local-codex
-cd my-local-codex
-npx github:dicnunz/clawdeck apply --workspace . --yes
-npx github:dicnunz/clawdeck audit
-npx github:dicnunz/clawdeck drill
-```
-
-If you already cloned the repo:
+## Commands
 
 ```bash
-npm link
-clawdeck local my-local-codex
-cd my-local-codex
-clawdeck apply --workspace . --yes
-clawdeck audit
+clawdeck adopt [workspace] [--home dir] [--name name] [--force] [--no-agents-link]
+clawdeck apply [--workspace dir] [--home dir] [--yes]
 clawdeck drill
+clawdeck smoke [--model ollama/name] [--home dir] [--timeout ms] [--no-openclaw]
+clawdeck audit --out report.md --html report.html --json audit.json --card card.svg
+clawdeck local [dir] [--name name] [--force]
+clawdeck doctor [--json]
+clawdeck snapshot --out setup.json
 ```
 
-Example output:
+`adopt` is the main path. It detects your existing OpenClaw workspace from `~/.openclaw/openclaw.json`, overlays missing Clawdeck files without overwriting your workspace, and links `AGENTS.md` to `CLAWDECK.md`.
+
+`apply` backs up `~/.openclaw/openclaw.json`, points the active default model setup at local Ollama models, and preserves existing providers/plugins/auth/gateway settings.
+
+`drill` checks whether the local path is ready. `smoke` goes further and asks the selected local model to reply through Ollama and OpenClaw inference.
+
+## Example Output
 
 ```text
-Clawdeck audit: 86/100 (solid)
-Local agent stack: primary=ollama/qwen3:4b-instruct, ollamaModels=3, gateway=warn, workspaceFiles=6/6, cloudFallback=none.
-Offline drill: blocked - openclaw gateway start && openclaw gateway status --json
+Clawdeck offline drill: blocked
+Local agent stack: primary=ollama/qwen3:4b-instruct, ollamaModels=7, gateway=warn, workspaceFiles=7/7, activeHostedFallback=none.
 
-Top fixes:
-- Start or repair the OpenClaw gateway: openclaw gateway start && openclaw gateway status --json
+READY Workspace contract: 7/7 command-center files present
+READY Local-model defaults: No hosted model aliases in active defaults
+READY Ollama reachable: 7 Ollama models detected
+READY Configured model weights: 3/3 configured models installed
+READY OpenClaw CLI: doctor=pass
+BLOCKED OpenClaw gateway: doctor=warn
 
-Wrote:
-- report: clawdeck.report.md
-- html: clawdeck.report.html
-- json: clawdeck.audit.json
-- card: clawdeck.card.svg
+Next: openclaw gateway start && openclaw gateway status --json
 ```
 
-## What It Builds
+```text
+Clawdeck smoke: pass
+Model: ollama/qwen3:4b-instruct
+
+PASS Ollama model reply: ok
+PASS OpenClaw local inference: model.run via local provider: ollama model: qwen3:4b-instruct outputs: 1 ok
+```
+
+## What It Adds
 
 ```text
-my-agent/
-  AGENTS.md
-  HEARTBEAT.md
+existing-openclaw-workspace/
+  AGENTS.md              # preserved, with a Clawdeck pointer block
+  CLAWDECK.md            # local-mode switchboard
   OFFLINE.md
+  HEARTBEAT.md
   SOUL.md
   TOOLS.md
   USER.md
@@ -92,83 +98,24 @@ my-agent/
     launch-brief.md
 ```
 
-The template is local-only:
+The active local model lineup:
 
-- primary model: `ollama/qwen3:4b-instruct`
-- code model: `ollama/qwen2.5-coder:7b`
+- primary: `ollama/qwen3:4b-instruct`
+- code: `ollama/qwen2.5-coder:7b`
 - fast fallback: `ollama/llama3.2:3b`
-- hosted fallback: none
-- thinking default: `low`
+- hosted fallback: none in the active default model aliases
 
-## Commands
+## Install OpenClaw And Models
 
-```bash
-clawdeck local [dir] [--name name] [--force]
-clawdeck apply [--workspace dir] [--home dir] [--yes]
-clawdeck audit
-clawdeck audit --out report.md --html report.html --json audit.json --card card.svg
-clawdeck audit --no-write
-clawdeck drill
-```
-
-`local` scaffolds a no-cloud OpenClaw/Ollama workspace. `apply` backs up and writes the local-only OpenClaw profile. Without `--yes`, `apply` is a dry run. When applied, hosted model providers are removed from the active model config while gateway/auth/meta settings are preserved. `audit` scores the stack and writes optional shareable artifacts. `drill` runs the same readiness gates without writing files and tells you the next command to clear before going offline. The audit checks Node, OpenClaw CLI/config/gateway, local-only model aliases, Ollama, local model presence, workspace files, and share safety.
-
-```bash
-clawdeck init [dir] [--name name] [--force]
-```
-
-Alias for `local`. Existing files are protected unless `--force` is set.
-
-```bash
-clawdeck doctor
-clawdeck doctor --json
-```
-
-Checks Node, OpenClaw CLI, `~/.openclaw/openclaw.json`, gateway health, and Ollama.
-
-```bash
-clawdeck snapshot --out setup.json
-```
-
-Reads `~/.openclaw/openclaw.json` and writes a redacted setup snapshot. Secret-shaped fields, auth state, emails, and home paths are scrubbed.
-
-## 60-Second Demo
-
-```bash
-clawdeck audit
-clawdeck drill
-open clawdeck.report.html
-```
-
-Expected shape:
-
-```text
-Clawdeck audit: 86/100 (solid)
-Local agent stack: primary=ollama/qwen3:4b-instruct, ollamaModels=3, gateway=warn, workspaceFiles=6/6, cloudFallback=none.
-Offline drill: blocked - openclaw gateway start && openclaw gateway status --json
-```
-
-Then fix the top item and rerun the audit. The score should move.
-
-## Install OpenClaw
-
-Clawdeck does not install OpenClaw or download models for you. It keeps those setup steps visible. `clawdeck apply --yes` is the only command that writes your OpenClaw config, and it backs up `~/.openclaw/openclaw.json` first.
+Clawdeck does not install OpenClaw, install Ollama, pull models, or start daemons for you.
 
 ```bash
 npm install -g openclaw@latest
 openclaw onboard --install-daemon
-openclaw gateway status --json
-```
-
-For local models:
-
-```bash
 ollama pull qwen3:4b-instruct
 ollama pull qwen2.5-coder:7b
 ollama pull llama3.2:3b
 ```
-
-Then review `.openclaw/openclaw.template.json` before copying any values into your real OpenClaw config.
 
 ## Claim Boundaries
 
@@ -180,18 +127,11 @@ Then review `.openclaw/openclaw.template.json` before copying any values into yo
 
 ## Why It Exists
 
-Most agent demos are either cloud dashboards or private dotfile piles. Clawdeck is the middle path: a local-only OpenClaw/Ollama profile that feels like Codex, names what must be installed before going offline, and gives you a drillable audit so you know whether it is actually ready.
+Most local-agent setups are either raw dotfiles or separate demo folders. Clawdeck makes local mode a first-class layer in the OpenClaw/Codex workspace you already use: adopt it, prove it, smoke test it, and keep the cloud/local boundary explicit.
 
 ## Safety
 
-Clawdeck does not copy:
-
-- OAuth files
-- session transcripts
-- browser state
-- private memory databases
-- `~/.openclaw/agents`
-- `~/.openclaw/tasks`
+Clawdeck does not copy OAuth files, transcripts, browser state, private memory databases, `~/.openclaw/agents`, or `~/.openclaw/tasks`.
 
 Use `clawdeck snapshot` when you want to show your setup publicly.
 

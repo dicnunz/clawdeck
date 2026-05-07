@@ -110,7 +110,7 @@ function scoreAudit({ doctor, config, ollama, workspace, localOnly }) {
     points("Node >=20", statusOf(doctor, "Node") === "pass", 8),
     points("OpenClaw CLI", statusOf(doctor, "OpenClaw CLI") === "pass", 12),
     points("OpenClaw config", config.ok, 14),
-    points("Local-only config", localOnly.ok, 12),
+    points("Local-model defaults", localOnly.ok, 12),
     points("OpenClaw gateway", statusOf(doctor, "Gateway") === "pass", 14),
     points("Ollama reachable", ollama.ok, 14),
     points("Local models installed", ollama.localConfiguredInstalled > 0, 12),
@@ -133,14 +133,14 @@ function buildSummary({ doctor, config, ollama, workspace, readiness }) {
   const gateway = statusOf(doctor, "Gateway");
   const localOnly = inspectLocalOnly(config);
   const cloud = localOnly.cloudModels.length === 0 ? "none" : localOnly.cloudModels.length;
-  const oneLine = `Local agent stack: primary=${primary}, ollamaModels=${modelCount}, gateway=${gateway}, workspaceFiles=${workspace.score}/6, cloudFallback=${cloud}.`;
+  const oneLine = `Local agent stack: primary=${primary}, ollamaModels=${modelCount}, gateway=${gateway}, workspaceFiles=${workspace.score}/${workspace.max}, activeHostedFallback=${cloud}.`;
 
   return {
     oneLine,
     primaryModel: primary,
     ollamaModelCount: modelCount,
     gatewayStatus: gateway,
-    cloudFallback: cloud,
+    activeHostedFallback: cloud,
     offlineStatus: readiness.status,
     nextAction: readiness.nextAction
   };
@@ -159,7 +159,7 @@ function buildReadiness({ doctor, config, ollama, workspace, localOnly }) {
       command: "clawdeck local ."
     },
     {
-      name: "Local-only profile",
+      name: "Local-model defaults",
       ok: config.ok && localOnly.ok,
       detail: config.ok ? localOnly.message : config.message,
       command: "clawdeck apply --workspace . --yes"
@@ -220,7 +220,7 @@ function buildFixes({ doctor, config, ollama, workspace, localOnly, readiness })
   if (config.ok && !localOnly.ok) {
     fixes.push({
       title: "Remove hosted model fallback",
-      command: "clawdeck local ./my-local-codex",
+      command: "clawdeck apply --workspace . --yes",
       why: `The current OpenClaw config references hosted models: ${localOnly.cloudModels.join(", ")}.`
     });
   }
@@ -250,7 +250,7 @@ function buildFixes({ doctor, config, ollama, workspace, localOnly, readiness })
   if (workspace.missing.length > 0) {
     fixes.push({
       title: "Scaffold workspace files",
-      command: "clawdeck local .",
+      command: "clawdeck adopt .",
       why: "The command-center files make the setup portable and understandable."
     });
   }
@@ -259,7 +259,7 @@ function buildFixes({ doctor, config, ollama, workspace, localOnly, readiness })
     fixes.push({
       title: "Clear offline drill",
       command: readiness.nextAction,
-      why: "The readiness drill still has a blocked local-only gate."
+      why: "The readiness drill still has a blocked local-model gate."
     });
   }
 
@@ -450,7 +450,7 @@ function renderCard(audit) {
   <text x="86" y="300" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="700" fill="#111111">Offline drill: ${escapeXml(audit.readiness.status)}</text>
   <text x="86" y="338" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="24" font-weight="700" fill="#111111">Top fix: ${fix}</text>
   <text x="86" y="370" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="24" fill="#333333">${summary}</text>
-  <text x="86" y="520" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="800" fill="#111111">npx github:dicnunz/clawdeck local my-codex</text>
+  <text x="86" y="520" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="800" fill="#111111">npx github:dicnunz/clawdeck adopt</text>
   <text x="86" y="558" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="18" fill="#555555">No auth, sessions, browser state, or private memory included.</text>
 </svg>
 `;
@@ -532,7 +532,7 @@ function readOllamaModels(configured = []) {
 }
 
 async function inspectWorkspace(cwd) {
-  const expected = ["AGENTS.md", "SOUL.md", "USER.md", "TOOLS.md", "HEARTBEAT.md", "OFFLINE.md"];
+  const expected = ["AGENTS.md", "CLAWDECK.md", "SOUL.md", "USER.md", "TOOLS.md", "HEARTBEAT.md", "OFFLINE.md"];
   const present = [];
   const missing = [];
 
@@ -568,7 +568,7 @@ function inspectLocalOnly(config) {
   return {
     ok: cloudModels.length === 0,
     cloudModels,
-    message: cloudModels.length === 0 ? "No hosted model aliases detected" : `Hosted aliases detected: ${cloudModels.join(", ")}`
+    message: cloudModels.length === 0 ? "No hosted model aliases in active defaults" : `Hosted aliases in active defaults: ${cloudModels.join(", ")}`
   };
 }
 

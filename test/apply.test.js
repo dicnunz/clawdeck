@@ -16,7 +16,7 @@ test("apply dry run does not write OpenClaw config", async () => {
   await assert.rejects(fs.access(path.join(home, ".openclaw", "openclaw.json")));
 });
 
-test("apply writes local-only config and backs up existing config", async () => {
+test("apply writes local-model defaults and preserves existing OpenClaw config", async () => {
   const root = await fs.mkdtemp(path.join(os.tmpdir(), "clawdeck-apply-"));
   const home = path.join(root, "home");
   const workspace = path.join(root, "workspace");
@@ -24,15 +24,41 @@ test("apply writes local-only config and backs up existing config", async () => 
   await fs.mkdir(openclawDir, { recursive: true });
   await fs.writeFile(path.join(openclawDir, "openclaw.json"), JSON.stringify({
     gateway: {
-      port: 18789
+      port: 18789,
+      mode: "local"
     },
     auth: {
-      mode: "local"
+      profiles: {
+        openai: {
+          provider: "openai",
+          mode: "api_key"
+        }
+      },
+      order: {
+        openai: ["openai"]
+      }
     },
     models: {
       providers: {
         openai: {
-          enabled: true
+          baseUrl: "https://api.openai.com/v1",
+          api: "openai-responses",
+          models: [
+            {
+              id: "gpt-4o-mini",
+              name: "GPT 4o mini",
+              contextWindow: 128000,
+              maxTokens: 4096,
+              reasoning: false,
+              input: ["text"],
+              cost: {
+                input: 0,
+                output: 0,
+                cacheRead: 0,
+                cacheWrite: 0
+              }
+            }
+          ]
         }
       }
     },
@@ -45,6 +71,10 @@ test("apply writes local-only config and backs up existing config", async () => 
     },
     agents: {
       defaults: {
+        agentRuntime: {
+          id: "auto",
+          fallback: "pi"
+        },
         models: {
           "openai-codex/gpt-5.5": {}
         }
@@ -62,11 +92,13 @@ test("apply writes local-only config and backs up existing config", async () => 
 
   assert.equal(result.applied, true);
   assert.match(config, /ollama\/qwen3:4b-instruct/);
-  assert.equal(/openai|anthropic|gemini|claude|gpt-/i.test(config), false);
+  assert.equal(/openai|anthropic|gemini|claude|gpt-/i.test(JSON.stringify(JSON.parse(config).agents.defaults)), false);
   assert.equal(JSON.parse(config).agents.defaults.workspace, workspace);
+  assert.equal(JSON.parse(config).agents.defaults.agentRuntime.id, "auto");
   assert.equal(JSON.parse(config).gateway.port, 18789);
-  assert.equal(JSON.parse(config).auth.mode, "local");
-  assert.deepEqual(Object.keys(JSON.parse(config).models.providers), ["ollama"]);
-  assert.equal(JSON.parse(config).plugins.entries.openai, undefined);
+  assert.equal(JSON.parse(config).auth.profiles.openai.mode, "api_key");
+  assert.deepEqual(Object.keys(JSON.parse(config).models.providers).sort(), ["ollama", "openai"]);
+  assert.equal(JSON.parse(config).models.providers.openai.baseUrl, "https://api.openai.com/v1");
+  assert.equal(JSON.parse(config).plugins.entries.openai.enabled, true);
   await fs.access(path.join(openclawDir, "openclaw.json.backup-20260507T000000Z"));
 });

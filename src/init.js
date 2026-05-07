@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 const SOURCE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const TEMPLATE_ROOT = path.join(SOURCE_ROOT, "templates");
 
-export async function initWorkspace({ targetDir = ".", name, force = false } = {}) {
+export async function initWorkspace({ targetDir = ".", name, force = false, skipExisting = false } = {}) {
   const target = path.resolve(targetDir);
   const workspaceName = name ?? path.basename(target);
   const files = await listTemplateFiles(TEMPLATE_ROOT);
@@ -14,7 +14,7 @@ export async function initWorkspace({ targetDir = ".", name, force = false } = {
   for (const file of files) {
     const relative = path.relative(TEMPLATE_ROOT, file);
     const destination = path.join(target, relative);
-    if (!force && await exists(destination)) {
+    if (!force && !skipExisting && await exists(destination)) {
       conflicts.push(relative);
     }
   }
@@ -24,9 +24,14 @@ export async function initWorkspace({ targetDir = ".", name, force = false } = {
   }
 
   const created = [];
+  const skipped = [];
   for (const file of files) {
     const relative = path.relative(TEMPLATE_ROOT, file);
     const destination = path.join(target, relative);
+    if (!force && skipExisting && await exists(destination)) {
+      skipped.push(relative);
+      continue;
+    }
     const body = await fs.readFile(file, "utf8");
     const rendered = body.replaceAll("{{PROJECT_NAME}}", workspaceName);
     await fs.mkdir(path.dirname(destination), { recursive: true });
@@ -34,7 +39,7 @@ export async function initWorkspace({ targetDir = ".", name, force = false } = {
     created.push(relative);
   }
 
-  return { targetDir: target, created };
+  return { targetDir: target, created, skipped };
 }
 
 async function listTemplateFiles(root) {

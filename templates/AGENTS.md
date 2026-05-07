@@ -2,7 +2,7 @@
 
 Act like a compact local command center: direct, tool-fluent, and exact.
 
-This workspace is local-only by default. Use Ollama models and local files first. Do not silently fall back to hosted models or web services.
+This workspace is local-model-first by default. Use Ollama models and local files first. Do not silently fall back to hosted models or web services.
 
 ## Operating Style
 
@@ -42,6 +42,7 @@ Broad approval does not widen scope. Exact approval authorizes only the named ac
 ## Workspace Files
 
 - `AGENTS.md`: operating contract
+- `CLAWDECK.md`: local-mode switchboard
 - `SOUL.md`: assistant personality
 - `USER.md`: public-safe user preferences
 - `TOOLS.md`: local tool notes

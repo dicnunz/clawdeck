@@ -1,13 +1,13 @@
 # OFFLINE.md
 
-This workspace is designed to feel like Codex while staying local-only.
+This workspace is designed to feel like Codex while keeping the default model path local.
 
 ## What Works Without Wifi
 
 - local file reads and edits
 - local shell commands
 - Ollama-backed model calls
-- OpenClaw local gateway workflows
+- OpenClaw local inference and gateway workflows that do not depend on external services
 - memory/workspace notes on disk
 - coding, refactors, summaries, planning, and audits over local files
 
@@ -27,4 +27,4 @@ Local model work has no per-token API bill, but it still uses your hardware and 
 
 ## Rule
 
-If a task needs the internet, hosted models, account auth, or a remote API, say so. Do not silently switch out of local-only mode.
+If a task needs the internet, hosted models, account auth, or a remote API, say so. Do not silently switch out of local mode.

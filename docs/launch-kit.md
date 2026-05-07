@@ -2,7 +2,7 @@
 
 ## GitHub Description
 
-Local-model Codex-feeling OpenClaw setup for Ollama.
+Local-model mode for your existing OpenClaw/Codex workspace.
 
 ## Topics
 
@@ -10,26 +10,25 @@ Local-model Codex-feeling OpenClaw setup for Ollama.
 
 ## README Hook
 
-Most agent demos are cloud dashboards or private dotfile piles. Clawdeck is the middle path: a tiny CLI that turns OpenClaw + Ollama into a local-model Codex-feeling workspace that can keep doing local file/code work without wifi after install.
+Clawdeck makes local models feel like a real mode inside the OpenClaw/Codex workspace you already use: adopt the workspace, apply a backed-up local Ollama profile, drill readiness, and smoke-test actual local inference.
 
 ## Launch Post Draft
 
-I built Clawdeck: a tiny CLI that gives OpenClaw + Ollama a local-model Codex-style workspace.
+I built Clawdeck: a tiny CLI that turns local Ollama models into a verified mode inside your existing OpenClaw/Codex workspace.
 
-It scaffolds AGENTS/OFFLINE/HEARTBEAT files, applies a backed-up OpenClaw profile with only Ollama model aliases, and runs an offline drill that tells you exactly what is still blocking no-wifi agent work.
+It does not create a separate toy agent folder. It adopts your current OpenClaw workspace, adds a `CLAWDECK.md` local-mode contract, preserves existing providers/plugins/auth, points the active default path at Ollama, then proves the path with `drill` and `smoke`.
 
 Try it:
 
 ```bash
-npx github:dicnunz/clawdeck local my-local-codex
-cd my-local-codex
-npx github:dicnunz/clawdeck apply --workspace . --yes
-npx github:dicnunz/clawdeck audit
+npx github:dicnunz/clawdeck adopt
+npx github:dicnunz/clawdeck apply --yes
 npx github:dicnunz/clawdeck drill
+npx github:dicnunz/clawdeck smoke
 ```
 
 GitHub: https://github.com/dicnunz/clawdeck
 
 ## Resume Bullet
 
-Built Clawdeck, an open-source Node CLI that turns OpenClaw/Ollama into a source-checked local-model Codex-feeling workspace with backed-up config apply, no hosted model fallback, offline drill gates, polished local audit reports, tests, schema, and CI.
+Built Clawdeck, an open-source Node CLI that adopts existing OpenClaw/Codex workspaces into a verified local-model mode with backed-up config apply, preserved provider state, Ollama/OpenClaw smoke tests, offline drill gates, polished local audit reports, tests, schemas, and source-checked product claims.

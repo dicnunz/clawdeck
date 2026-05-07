@@ -31,4 +31,4 @@ Use `clawdeck audit` or `clawdeck snapshot` for public sharing. Do not paste raw
 
 The audit output is designed to be shareable, but still review it before posting. It intentionally reports readiness, local model names, gateway status, hosted-fallback presence, and missing setup steps; it does not include auth state, transcripts, task databases, browser profiles, or private memory.
 
-`clawdeck apply --yes` backs up `~/.openclaw/openclaw.json` before writing. It replaces active model providers with the local Ollama provider and preserves gateway/auth/meta settings so the local daemon setup is not casually erased.
+`clawdeck apply --yes` backs up `~/.openclaw/openclaw.json` before writing. It changes the active default model path to Ollama while preserving existing providers, plugins, gateway, auth, and meta settings so a real OpenClaw setup is not casually erased.
