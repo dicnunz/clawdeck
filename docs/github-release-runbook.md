@@ -11,6 +11,7 @@ Do not run these commands without fresh approval from the repo owner.
 - working tree: clean
 - GitHub account: `dicnunz`
 - target repo: `dicnunz/clawdeck`
+- local verification: `npm run verify`
 
 If `v0.1.0` still points at an older local-only draft and has not been pushed, retag it after the final commit:
 
@@ -21,6 +22,8 @@ git tag -f v0.1.0
 ## Commands
 
 ```bash
+npm run verify
+
 gh repo create dicnunz/clawdeck \
   --public \
   --source=. \

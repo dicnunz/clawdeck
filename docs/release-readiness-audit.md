@@ -19,7 +19,7 @@ Turn the local-model Codex/OpenClaw setup into a polished, non-gimmicky product 
 | Shareable public surface exists | HTML/Markdown/JSON/SVG audit outputs, launch kit, release notes | `clawdeck audit` renders report artifacts; `docs/launch-kit.md` and `docs/release-notes/v0.1.0.md` are launch-ready. |
 | Safety and privacy are explicit | `docs/security.md`, `src/sanitize.js`, `clawdeck snapshot` | Snapshot/report paths redact secret-shaped keys, email addresses, and home paths, and docs state which private OpenClaw state is not copied. |
 | Tests cover behavior, not just docs | `test/*.test.js` | Tests cover adopt, apply merge/backup, audit/drill, handoff, CLI help, init, sanitize/snapshot, smoke runner behavior, and an actual CLI temp-home flow. |
-| Public repo is credible | GitHub Actions CI | `.github/workflows/ci.yml` runs tests and package checks on Node 20 and 22. |
+| Public repo is credible | GitHub Actions CI | `.github/workflows/ci.yml` runs `npm run verify` on Node 20 and 22. |
 | Public release path is known | `docs/github-release-runbook.md` | Runbook includes repo creation, tag push, topics, release creation, and proof commands. Local tag `v0.1.0` points at the final release commit. |
 
 ## Verified Locally
@@ -29,6 +29,7 @@ These checks were run locally during release prep:
 - `npm test`
 - `git diff --check`
 - `npm pack --dry-run`
+- `npm run verify`
 - packed tarball CLI help through `npm exec --package <tarball> -- clawdeck help`
 - CLI temp-home flow through `bin/clawdeck.js`: `adopt -> apply -> drill`
 - temp existing-workspace flow: `adopt -> apply -> openclaw config validate --json -> drill -> smoke`

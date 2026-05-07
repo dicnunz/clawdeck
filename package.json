@@ -15,6 +15,7 @@
     "schema"
   ],
   "scripts": {
+    "verify": "git diff --check && npm test && npm pack --dry-run && node ./bin/clawdeck.js help > /dev/null && node ./bin/clawdeck.js handoff --no-checks > /dev/null",
     "test": "node --test",
     "adopt": "node ./bin/clawdeck.js adopt",
     "local": "node ./bin/clawdeck.js local",

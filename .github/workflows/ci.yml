@@ -29,8 +29,5 @@ jobs:
       - name: Install
         run: npm install
 
-      - name: Test
-        run: npm test
-
-      - name: Package check
-        run: npm pack --dry-run
+      - name: Verify
+        run: npm run verify
