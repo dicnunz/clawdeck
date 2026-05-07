@@ -20,7 +20,7 @@ Turn the local-model Codex/OpenClaw setup into a polished, non-gimmicky product 
 | Safety and privacy are explicit | `docs/security.md`, `src/sanitize.js`, `clawdeck snapshot` | Snapshot/report paths redact secret-shaped keys, email addresses, and home paths, and docs state which private OpenClaw state is not copied. |
 | Tests cover behavior, not just docs | `test/*.test.js` | Unit tests cover adopt, apply merge/backup, audit/drill, CLI help, init, sanitize/snapshot, and smoke runner behavior. |
 | Public repo is credible | GitHub Actions CI | `.github/workflows/ci.yml` runs tests and package checks on Node 20 and 22. |
-| Public release path is known | `docs/github-release-runbook.md` | Runbook includes repo creation, tag push, topics, release creation, and proof commands. |
+| Public release path is known | `docs/github-release-runbook.md` | Runbook includes repo creation, tag push, topics, release creation, and proof commands. Local tag `v0.1.0` points at the final release commit. |
 
 ## Verified Locally
 
@@ -37,7 +37,6 @@ These checks were run locally during release prep:
 ## Known Boundaries
 
 - The public GitHub repo was not created during local prep.
-- `v0.1.0` must point at the final release commit before publishing.
 - Browser visual QA of the generated `file://` HTML report was blocked by Browser Use URL policy; the generated HTML/CSS and CLI artifact creation were verified, but not through in-app browser rendering.
 - The OpenClaw gateway on this Mac reported stopped/unhealthy during drill, which is a machine setup status, not a package failure. `clawdeck smoke` still passed through local OpenClaw inference.
 
