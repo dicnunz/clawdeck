@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dicnunz/clawdeck/schema/audit-v1.schema.json",
+  "title": "Clawdeck Audit",
+  "type": "object",
+  "required": ["schemaVersion", "generatedAt", "score", "summary", "checks", "readiness", "fixes"],
+  "properties": {
+    "schemaVersion": {
+      "const": "clawdeck.audit.v1"
+    },
+    "generatedAt": {
+      "type": "string"
+    },
+    "score": {
+      "type": "object",
+      "required": ["points", "max", "label", "items"],
+      "properties": {
+        "points": {
+          "type": "number"
+        },
+        "max": {
+          "const": 100
+        },
+        "label": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "earned", "max"]
+          }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["oneLine", "primaryModel", "ollamaModelCount", "gatewayStatus", "offlineStatus", "nextAction"]
+    },
+    "checks": {
+      "type": "object"
+    },
+    "readiness": {
+      "type": "object",
+      "required": ["status", "gates", "nextAction"],
+      "properties": {
+        "status": {
+          "enum": ["ready", "blocked"]
+        },
+        "gates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "ok", "detail", "command"]
+          }
+        },
+        "nextAction": {
+          "type": "string"
+        }
+      }
+    },
+    "fixes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title", "command", "why"]
+      }
+    },
+    "snapshot": {
+      "type": ["object", "null"]
+    }
+  }
+}

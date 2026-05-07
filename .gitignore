@@ -1,0 +1,11 @@
+node_modules/
+coverage/
+tmp/
+.DS_Store
+*.log
+clawdeck.audit.json
+clawdeck.card.svg
+clawdeck.report.md
+clawdeck.report.html
+clawdeck.snapshot.json
+examples/local.snapshot.json

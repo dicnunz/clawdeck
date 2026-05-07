@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "clawdeck.snapshot.v1",
+  "generatedAt": "2026-05-07T00:00:00.000Z",
+  "summary": {
+    "primaryModel": "ollama/qwen3:4b-instruct",
+    "thinkingDefault": "low",
+    "workspace": "$HOME/.openclaw/workspace",
+    "modelAliases": [
+      "ollama/qwen3:4b-instruct",
+      "ollama/qwen2.5-coder:7b",
+      "ollama/llama3.2:3b"
+    ],
+    "providers": [
+      "ollama"
+    ],
+    "plugins": [
+      "active-memory",
+      "codex",
+      "ollama"
+    ]
+  },
+  "openclaw": {
+    "agents": {
+      "defaults": {
+        "workspace": "$HOME/.openclaw/workspace",
+        "thinkingDefault": "low"
+      }
+    },
+    "auth": "[redacted]"
+  }
+}

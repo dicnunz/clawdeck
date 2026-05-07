@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dicnunz/clawdeck/schema/snapshot-v1.schema.json",
+  "title": "Clawdeck Snapshot",
+  "type": "object",
+  "required": ["schemaVersion", "generatedAt", "summary", "openclaw"],
+  "properties": {
+    "schemaVersion": {
+      "const": "clawdeck.snapshot.v1"
+    },
+    "generatedAt": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "object",
+      "required": ["primaryModel", "thinkingDefault", "workspace", "modelAliases", "providers", "plugins"],
+      "properties": {
+        "primaryModel": {
+          "type": ["string", "null"]
+        },
+        "thinkingDefault": {
+          "type": ["string", "null"]
+        },
+        "workspace": {
+          "type": ["string", "null"]
+        },
+        "modelAliases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "providers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "plugins": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "openclaw": {
+      "type": "object"
+    }
+  }
+}

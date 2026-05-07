@@ -1,0 +1,85 @@
+{
+  "agents": {
+    "defaults": {
+      "workspace": "./",
+      "models": {
+        "ollama/qwen3:4b-instruct": {},
+        "ollama/qwen2.5-coder:7b": {},
+        "ollama/llama3.2:3b": {}
+      },
+      "model": {
+        "primary": "ollama/qwen3:4b-instruct"
+      },
+      "thinkingDefault": "low"
+    }
+  },
+  "models": {
+    "providers": {
+      "ollama": {
+        "baseUrl": "http://127.0.0.1:11434",
+        "api": "ollama",
+        "timeoutSeconds": 120,
+        "models": [
+          {
+            "id": "qwen3:4b-instruct",
+            "name": "Qwen3 4B Instruct local primary",
+            "contextWindow": 32768,
+            "maxTokens": 2048,
+            "reasoning": false,
+            "input": ["text"],
+            "api": "ollama",
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            }
+          },
+          {
+            "id": "qwen2.5-coder:7b",
+            "name": "Qwen 2.5 Coder 7B local code",
+            "contextWindow": 32768,
+            "maxTokens": 4096,
+            "reasoning": false,
+            "input": ["text"],
+            "api": "ollama",
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            }
+          },
+          {
+            "id": "llama3.2:3b",
+            "name": "Llama 3.2 3B local fast fallback",
+            "contextWindow": 32768,
+            "maxTokens": 2048,
+            "reasoning": false,
+            "input": ["text"],
+            "api": "ollama",
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            }
+          }
+        ]
+      }
+    }
+  },
+  "tools": {
+    "profile": "coding"
+  },
+  "plugins": {
+    "entries": {
+      "active-memory": {
+        "enabled": true
+      },
+      "ollama": {
+        "enabled": true
+      }
+    }
+  }
+}

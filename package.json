@@ -1,0 +1,49 @@
+{
+  "name": "clawdeck",
+  "version": "0.1.0",
+  "description": "Local-model Codex-feeling OpenClaw setup for Ollama.",
+  "type": "module",
+  "bin": {
+    "clawdeck": "./bin/clawdeck.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "templates",
+    "docs",
+    "examples",
+    "schema"
+  ],
+  "scripts": {
+    "test": "node --test",
+    "local": "node ./bin/clawdeck.js local",
+    "apply": "node ./bin/clawdeck.js apply",
+    "audit": "node ./bin/clawdeck.js audit",
+    "drill": "node ./bin/clawdeck.js drill",
+    "doctor": "node ./bin/clawdeck.js doctor",
+    "snapshot": "node ./bin/clawdeck.js snapshot --out examples/local.snapshot.json"
+  },
+  "keywords": [
+    "openclaw",
+    "codex",
+    "ollama",
+    "agents",
+    "local-first",
+    "ai-agent",
+    "agent-audit",
+    "cli"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dicnunz/clawdeck.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dicnunz/clawdeck/issues"
+  },
+  "homepage": "https://github.com/dicnunz/clawdeck#readme",
+  "author": "Nicholas Dunzelman",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  }
+}
