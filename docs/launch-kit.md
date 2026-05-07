@@ -31,4 +31,4 @@ GitHub: https://github.com/dicnunz/clawdeck
 
 ## Resume Bullet
 
-Built Clawdeck, an open-source Node CLI that adopts existing OpenClaw/Codex workspaces into a verified local-model mode with backed-up config apply, preserved provider state, Ollama/OpenClaw smoke tests, offline drill gates, polished local audit reports, tests, schemas, and source-checked product claims.
+Built Clawdeck, an open-source Node CLI that adopts existing OpenClaw/Codex workspaces into a verified local-model mode with backed-up config apply, preserved provider state, Ollama/OpenClaw smoke tests, offline drill gates, polished local audit reports, tests, schemas, CI, and source-checked product claims.
