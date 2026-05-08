@@ -10,7 +10,7 @@ Local-model mode for your existing OpenClaw/Codex workspace.
 
 ## README Hook
 
-Clawdeck makes local models feel like a real mode inside the OpenClaw/Codex workspace you already use: adopt the workspace, apply a backed-up local Ollama profile, drill readiness, and smoke-test actual local inference.
+Clawdeck makes local models feel like a real mode inside the OpenClaw/Codex workspace you already use: one setup command adopts the workspace, applies a backed-up local Ollama profile, drills readiness, and leaves the next command.
 
 ## Launch Post Draft
 
@@ -21,9 +21,7 @@ It does not create a separate toy agent folder. It adopts your current OpenClaw 
 Try it:
 
 ```bash
-npx @nicdunz/clawdeck adopt
-npx @nicdunz/clawdeck apply --yes
-npx @nicdunz/clawdeck drill
+npx @nicdunz/clawdeck setup --yes
 npx @nicdunz/clawdeck smoke
 npx @nicdunz/clawdeck handoff
 ```
@@ -33,4 +31,4 @@ npm: https://www.npmjs.com/package/@nicdunz/clawdeck
 
 ## Resume Bullet
 
-Built Clawdeck, an open-source Node CLI that adopts existing OpenClaw/Codex workspaces into a verified local-model mode with backed-up config apply, preserved provider state, Ollama/OpenClaw smoke tests, Codex handoff briefs, offline drill gates, polished local audit reports, tests, schemas, CI, and source-checked product claims.
+Built Clawdeck, an open-source Node CLI that gives existing OpenClaw/Codex workspaces a one-command local-model setup path with backed-up config apply, preserved provider state, Ollama/OpenClaw smoke tests, Codex handoff briefs, offline drill gates, polished local audit reports, tests, schemas, CI, and source-checked product claims.

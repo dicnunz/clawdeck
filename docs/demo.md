@@ -5,9 +5,7 @@ Use this for a short screen recording or launch thread.
 Published install path:
 
 ```bash
-npx @nicdunz/clawdeck adopt
-npx @nicdunz/clawdeck apply --yes
-npx @nicdunz/clawdeck drill
+npx @nicdunz/clawdeck setup --yes
 npx @nicdunz/clawdeck smoke
 npx @nicdunz/clawdeck handoff
 ```
@@ -18,9 +16,7 @@ Local checkout path:
 git clone https://github.com/dicnunz/clawdeck
 cd clawdeck
 npm link
-clawdeck adopt
-clawdeck apply --yes
-clawdeck drill
+clawdeck setup --yes
 clawdeck smoke
 clawdeck handoff
 clawdeck audit

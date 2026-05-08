@@ -25,7 +25,7 @@ export async function runAudit({
   const config = await readOpenClawConfig({ home, cwd });
   const configuredLocalModels = config.ok ? extractConfiguredLocalModels(config.value) : [];
   const ollama = readOllamaModels(configuredLocalModels);
-  const workspace = await inspectWorkspace(cwd);
+  const workspace = await resolveWorkspace({ cwd, config, home });
   const localOnly = inspectLocalOnly(config);
   const score = scoreAudit({ doctor, config, ollama, workspace, localOnly });
   const readiness = buildReadiness({ doctor, config, ollama, workspace, localOnly });
@@ -153,7 +153,11 @@ function buildReadiness({ doctor, config, ollama, workspace, localOnly }) {
   const configuredCount = ollama.configured?.length ?? installedCount + (ollama.localConfiguredMissing?.length ?? 0);
   const openclawStatus = statusOf(doctor, "OpenClaw CLI");
   const gatewayStatus = statusOf(doctor, "Gateway");
-  const workspaceCommand = workspace.sourceCheckout ? "clawdeck adopt" : "clawdeck adopt .";
+  const workspaceCommand = workspace.sourceCheckout
+    ? "clawdeck adopt"
+    : workspace.source === "configured-default-workspace"
+      ? `clawdeck adopt ${quotePathForCommand(workspace.cwd)}`
+      : "clawdeck adopt .";
   const workspaceDetail = workspace.sourceCheckout
     ? "source checkout detected; adopt an OpenClaw workspace instead"
     : `${workspace.score}/${workspace.max} command-center files present`;
@@ -539,7 +543,22 @@ function readOllamaModels(configured = []) {
   };
 }
 
-async function inspectWorkspace(cwd) {
+async function resolveWorkspace({ cwd, config, home }) {
+  const current = await inspectWorkspace(cwd, home);
+  if (current.sourceCheckout || current.score > 0) return current;
+
+  const configured = config.ok ? config.value?.agents?.defaults?.workspace : null;
+  if (typeof configured === "string" && configured.trim()) {
+    return {
+      ...await inspectWorkspace(configured, home),
+      source: "configured-default-workspace"
+    };
+  }
+
+  return current;
+}
+
+async function inspectWorkspace(cwd, home = os.homedir()) {
   const expected = ["AGENTS.md", "CLAWDECK.md", "SOUL.md", "USER.md", "TOOLS.md", "HEARTBEAT.md", "OFFLINE.md"];
   const present = [];
   const missing = [];
@@ -555,7 +574,8 @@ async function inspectWorkspace(cwd) {
   }
 
   return {
-    cwd: redactText(cwd, os.homedir()),
+    cwd: redactText(cwd, home),
+    source: "current-directory",
     present,
     missing,
     score: present.length,
@@ -645,6 +665,10 @@ function truncate(value, max) {
   const text = String(value);
   if (text.length <= max) return text;
   return `${text.slice(0, max - 3)}...`;
+}
+
+function quotePathForCommand(file) {
+  return /\s/.test(file) ? JSON.stringify(file) : file;
 }
 
 function displayPath(file) {

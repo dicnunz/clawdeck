@@ -8,11 +8,13 @@ import { applyLocalProfile, formatApplyCli } from "./apply.js";
 import { adoptWorkspace, formatAdoptCli } from "./adopt.js";
 import { formatSmokeCli, runSmoke } from "./smoke.js";
 import { buildHandoff, formatHandoffCli } from "./handoff.js";
+import { formatSetupCli, runSetup } from "./setup.js";
 
 const HELP = `clawdeck
 
 Usage:
   clawdeck adopt [workspace] [--home dir] [--name name] [--force] [--no-agents-link]
+  clawdeck setup [workspace] [--home dir] [--name name] [--yes] [--smoke] [--timeout ms] [--force] [--no-agents-link]
   clawdeck local [dir] [--name name] [--force]
   clawdeck apply [--workspace dir] [--home dir] [--yes]
   clawdeck init [dir] [--name name] [--force]
@@ -21,11 +23,12 @@ Usage:
   clawdeck smoke [--model ollama/name] [--home dir] [--timeout ms] [--no-openclaw]
   clawdeck handoff [--home dir] [--no-checks]
   clawdeck doctor [--json]
-  clawdeck snapshot [--out file]
+  clawdeck snapshot [--out file] [--home dir]
   clawdeck help
 
 Commands:
   adopt    Overlay Clawdeck into an existing OpenClaw/Codex workspace.
+  setup    Adopt, optionally apply, run the drill, and print one next action.
   local     Scaffold a new local-model OpenClaw workspace.
   apply     Apply the local-model OpenClaw profile with backup.
   init      Alias for local.
@@ -39,7 +42,6 @@ Commands:
 
 export async function runCli(argv, io = process) {
   const [command = "help", ...rest] = argv;
-  const parsed = parseArgs(rest);
 
   if (command === "help" || command === "--help" || command === "-h") {
     io.stdout.write(HELP);
@@ -53,6 +55,17 @@ export async function runCli(argv, io = process) {
     return;
   }
 
+  if (!FLAG_SCHEMA[command]) {
+    throw new Error(`unknown command "${command}". Run "clawdeck help".`);
+  }
+
+  if (rest.includes("--help") || rest.includes("-h")) {
+    io.stdout.write(HELP);
+    return;
+  }
+
+  const parsed = parseArgs(command, rest);
+
   if (command === "adopt") {
     const result = await adoptWorkspace({
       workspace: parsed.positionals[0],
@@ -62,6 +75,21 @@ export async function runCli(argv, io = process) {
       linkAgents: !parsed.flags.no_agents_link
     });
     io.stdout.write(formatAdoptCli(result));
+    return;
+  }
+
+  if (command === "setup") {
+    const result = await runSetup({
+      workspace: parsed.positionals[0],
+      home: stringFlag(parsed.flags.home),
+      name: stringFlag(parsed.flags.name),
+      force: Boolean(parsed.flags.force),
+      linkAgents: !parsed.flags.no_agents_link,
+      yes: Boolean(parsed.flags.yes),
+      smoke: Boolean(parsed.flags.smoke),
+      timeout: numberFlag(parsed.flags.timeout) ?? 60000
+    });
+    io.stdout.write(formatSetupCli(result));
     return;
   }
 
@@ -137,7 +165,10 @@ export async function runCli(argv, io = process) {
 
   if (command === "snapshot") {
     const out = parsed.flags.out ?? "clawdeck.snapshot.json";
-    const result = await writeSnapshot({ out });
+    const result = await writeSnapshot({
+      out,
+      home: stringFlag(parsed.flags.home)
+    });
     io.stdout.write(`Wrote redacted snapshot: ${result.out}\n`);
     return;
   }
@@ -145,9 +176,61 @@ export async function runCli(argv, io = process) {
   throw new Error(`unknown command "${command}". Run "clawdeck help".`);
 }
 
-function parseArgs(args) {
+const FLAG_SCHEMA = {
+  adopt: {
+    value: new Set(["home", "name"]),
+    boolean: new Set(["force", "no_agents_link"])
+  },
+  setup: {
+    value: new Set(["home", "name", "timeout"]),
+    boolean: new Set(["yes", "smoke", "force", "no_agents_link"])
+  },
+  local: {
+    value: new Set(["dir", "name"]),
+    boolean: new Set(["force"])
+  },
+  init: {
+    value: new Set(["dir", "name"]),
+    boolean: new Set(["force"])
+  },
+  apply: {
+    value: new Set(["workspace", "home"]),
+    boolean: new Set(["yes"])
+  },
+  audit: {
+    value: new Set(["out", "html", "json", "card"]),
+    boolean: new Set(["no_write"])
+  },
+  drill: {
+    value: new Set(),
+    boolean: new Set()
+  },
+  smoke: {
+    value: new Set(["model", "home", "timeout"]),
+    boolean: new Set(["no_openclaw"])
+  },
+  handoff: {
+    value: new Set(["home"]),
+    boolean: new Set(["no_checks"])
+  },
+  doctor: {
+    value: new Set(),
+    boolean: new Set(["json"])
+  },
+  snapshot: {
+    value: new Set(["out", "home"]),
+    boolean: new Set()
+  },
+  help: {
+    value: new Set(),
+    boolean: new Set()
+  }
+};
+
+function parseArgs(command, args) {
   const flags = {};
   const positionals = [];
+  const schema = FLAG_SCHEMA[command] ?? { value: new Set(), boolean: new Set() };
 
   for (let index = 0; index < args.length; index += 1) {
     const arg = args[index];
@@ -158,18 +241,32 @@ function parseArgs(args) {
 
     const [rawKey, rawValue] = arg.slice(2).split("=");
     const key = rawKey.replaceAll("-", "_");
+    const expectsValue = schema.value.has(key);
+    const expectsBoolean = schema.boolean.has(key);
+
+    if (!expectsValue && !expectsBoolean) {
+      throw new Error(`unknown option "--${rawKey}" for "${command}". Run "clawdeck help".`);
+    }
+
     if (rawValue !== undefined) {
+      if (expectsBoolean) {
+        throw new Error(`option "--${rawKey}" does not take a value.`);
+      }
       flags[key] = rawValue;
       continue;
     }
 
-    const next = args[index + 1];
-    if (next && !next.startsWith("--")) {
-      flags[key] = next;
-      index += 1;
+    if (expectsBoolean) {
+      flags[key] = true;
       continue;
     }
-    flags[key] = true;
+
+    const next = args[index + 1];
+    if (!next || next.startsWith("--")) {
+      throw new Error(`option "--${rawKey}" needs a value.`);
+    }
+    flags[key] = next;
+    index += 1;
   }
 
   return { flags, positionals };

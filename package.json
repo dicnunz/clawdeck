@@ -1,6 +1,6 @@
 {
   "name": "@nicdunz/clawdeck",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Local-model mode for existing OpenClaw and Codex workspaces.",
   "type": "module",
   "bin": {
@@ -17,6 +17,7 @@
   "scripts": {
     "verify": "git diff --check && npm test && npm pack --dry-run && node ./bin/clawdeck.js help > /dev/null && node ./bin/clawdeck.js handoff --no-checks > /dev/null",
     "test": "node --test",
+    "setup": "node ./bin/clawdeck.js setup",
     "adopt": "node ./bin/clawdeck.js adopt",
     "local": "node ./bin/clawdeck.js local",
     "apply": "node ./bin/clawdeck.js apply",

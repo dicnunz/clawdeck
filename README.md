@@ -11,6 +11,14 @@ Once OpenClaw, Ollama, and the model weights are installed, local file/code work
 Adopt the OpenClaw workspace you already have:
 
 ```bash
+npx @nicdunz/clawdeck setup --yes
+```
+
+That one command adopts the workspace, writes the backed-up local OpenClaw profile, runs the readiness drill, and prints the next command.
+
+Manual path:
+
+```bash
 npx @nicdunz/clawdeck adopt
 npx @nicdunz/clawdeck apply --yes
 npx @nicdunz/clawdeck drill
@@ -21,6 +29,7 @@ npx @nicdunz/clawdeck handoff
 Or point it at a specific project/workspace:
 
 ```bash
+npx @nicdunz/clawdeck setup . --yes
 npx @nicdunz/clawdeck adopt .
 npx @nicdunz/clawdeck apply --workspace . --yes
 npx @nicdunz/clawdeck audit
@@ -34,6 +43,7 @@ npx github:dicnunz/clawdeck adopt
 
 You get:
 
+- a one-command first run through `clawdeck setup --yes`
 - `CLAWDECK.md`: the local-mode switchboard for OpenClaw and Codex
 - a non-destructive `AGENTS.md` pointer so existing agents see the local contract
 - a backed-up OpenClaw config apply
@@ -50,6 +60,7 @@ That is the point: Clawdeck turns local mode into something you can adopt, verif
 
 ```bash
 clawdeck adopt [workspace] [--home dir] [--name name] [--force] [--no-agents-link]
+clawdeck setup [workspace] [--home dir] [--name name] [--yes] [--smoke] [--timeout ms] [--force] [--no-agents-link]
 clawdeck apply [--workspace dir] [--home dir] [--yes]
 clawdeck drill
 clawdeck smoke [--model ollama/name] [--home dir] [--timeout ms] [--no-openclaw]
@@ -57,10 +68,12 @@ clawdeck handoff [--home dir] [--no-checks]
 clawdeck audit --out report.md --html report.html --json audit.json --card card.svg
 clawdeck local [dir] [--name name] [--force]
 clawdeck doctor [--json]
-clawdeck snapshot --out setup.json
+clawdeck snapshot --out setup.json [--home dir]
 ```
 
 `adopt` is the main path. It detects your existing OpenClaw workspace from `~/.openclaw/openclaw.json`, overlays missing Clawdeck files without overwriting your workspace, and links `AGENTS.md` to `CLAWDECK.md`.
+
+`setup` is the first-run path. It runs `adopt`, previews or applies the local profile, runs the readiness drill, and leaves one next command. It only writes `~/.openclaw/openclaw.json` when you pass `--yes`.
 
 `apply` backs up `~/.openclaw/openclaw.json`, points the active default model setup at local Ollama models, and preserves existing providers/plugins/auth/gateway settings.
 

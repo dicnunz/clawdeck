@@ -52,6 +52,45 @@ test("audit prefers workspace local-model template over home OpenClaw config", a
   assert.equal(result.audit.readiness.gates.find((gate) => gate.name === "Local-model defaults").ok, true);
 });
 
+test("audit follows configured workspace when current directory is not a workspace", async () => {
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), "clawdeck-audit-configured-"));
+  const home = path.join(root, "home with spaces");
+  const cwd = path.join(root, "empty cwd");
+  const workspace = path.join(home, ".openclaw", "workspace with spaces");
+  await fs.mkdir(path.join(home, ".openclaw"), { recursive: true });
+  await fs.mkdir(cwd, { recursive: true });
+  await initWorkspace({ targetDir: workspace, name: "configured" });
+  await fs.writeFile(path.join(home, ".openclaw", "openclaw.json"), JSON.stringify({
+    agents: {
+      defaults: {
+        workspace,
+        model: {
+          primary: "ollama/qwen3:4b-instruct"
+        },
+        models: {
+          "ollama/qwen3:4b-instruct": {}
+        }
+      }
+    },
+    models: {
+      providers: {
+        ollama: {
+          models: [
+            { id: "qwen3:4b-instruct" }
+          ]
+        }
+      }
+    }
+  }));
+
+  const result = await runAudit({ home, cwd, write: false });
+
+  assert.equal(result.audit.checks.workspace.source, "configured-default-workspace");
+  assert.equal(result.audit.checks.workspace.score, 7);
+  assert.equal(JSON.stringify(result.audit).includes(home), false);
+  assert.equal(result.audit.readiness.gates.find((gate) => gate.name === "Workspace contract").ok, true);
+});
+
 test("audit creates output directories", async () => {
   const root = await fs.mkdtemp(path.join(os.tmpdir(), "clawdeck-audit-out-"));
   const home = path.join(root, "home");
