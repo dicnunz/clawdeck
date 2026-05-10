@@ -6,6 +6,8 @@ Clawdeck is not another agent framework and it is not a separate worse Codex clo
 
 Once OpenClaw, Ollama, and the model weights are installed, local file/code work can keep running without wifi. Internet search, remote APIs, account auth, cloud models, and some tool-heavy workflows still need network access.
 
+If Clawdeck saves you setup time, the smallest support path is the $5 Codex run receipt: <https://nicdunz.gumroad.com/l/smrimu>.
+
 ## Quick Start
 
 Adopt the OpenClaw workspace you already have:
