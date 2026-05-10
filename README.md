@@ -71,6 +71,7 @@ clawdeck audit --out report.md --html report.html --json audit.json --card card.
 clawdeck local [dir] [--name name] [--force]
 clawdeck doctor [--json]
 clawdeck snapshot --out setup.json [--home dir]
+clawdeck support
 ```
 
 `adopt` is the main path. It detects your existing OpenClaw workspace from `~/.openclaw/openclaw.json`, overlays missing Clawdeck files without overwriting your workspace, and links `AGENTS.md` to `CLAWDECK.md`.
@@ -82,6 +83,8 @@ clawdeck snapshot --out setup.json [--home dir]
 `drill` checks whether the local path is ready. `smoke` goes further and asks the selected local model to reply through Ollama and OpenClaw inference.
 
 `handoff` prints a compact brief you can paste into Codex Mac app so Codex uses the same `CLAWDECK.md` local-mode contract instead of treating the folder as a random repo.
+
+`support` prints the optional $5 paid support receipt link from the CLI for npm users who want it.
 
 ## Example Output
 

@@ -10,6 +10,8 @@ import { formatSmokeCli, runSmoke } from "./smoke.js";
 import { buildHandoff, formatHandoffCli } from "./handoff.js";
 import { formatSetupCli, runSetup } from "./setup.js";
 
+const SUPPORT_URL = "https://nicdunz.gumroad.com/l/smrimu";
+
 const HELP = `clawdeck
 
 Usage:
@@ -24,6 +26,7 @@ Usage:
   clawdeck handoff [--home dir] [--no-checks]
   clawdeck doctor [--json]
   clawdeck snapshot [--out file] [--home dir]
+  clawdeck support
   clawdeck help
 
 Commands:
@@ -38,6 +41,15 @@ Commands:
   handoff   Print a Codex Mac app local-mode handoff brief.
   doctor    Check Node, OpenClaw, Ollama, gateway, and local config health.
   snapshot  Write a redacted OpenClaw setup snapshot safe to share.
+  support   Print the optional $5 paid support receipt link.
+`;
+
+const SUPPORT = `Clawdeck support
+
+If Clawdeck saved you setup time, the smallest paid support path is the $5 Codex run receipt:
+${SUPPORT_URL}
+
+This is optional. Clawdeck remains MIT-licensed.
 `;
 
 export async function runCli(argv, io = process) {
@@ -65,6 +77,11 @@ export async function runCli(argv, io = process) {
   }
 
   const parsed = parseArgs(command, rest);
+
+  if (command === "support") {
+    io.stdout.write(SUPPORT);
+    return;
+  }
 
   if (command === "adopt") {
     const result = await adoptWorkspace({
@@ -219,6 +236,10 @@ const FLAG_SCHEMA = {
   },
   snapshot: {
     value: new Set(["out", "home"]),
+    boolean: new Set()
+  },
+  support: {
+    value: new Set(),
     boolean: new Set()
   },
   help: {

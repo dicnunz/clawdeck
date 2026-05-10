@@ -20,7 +20,23 @@ test("help exposes adopt, drill, smoke, and handoff commands", async () => {
   assert.match(output, /clawdeck drill/);
   assert.match(output, /clawdeck smoke/);
   assert.match(output, /clawdeck handoff/);
+  assert.match(output, /clawdeck support/);
   assert.match(output, /no-wifi readiness/);
+});
+
+test("support prints the optional paid support receipt link", async () => {
+  let output = "";
+  await runCli(["support"], {
+    stdout: {
+      write(value) {
+        output += value;
+      }
+    }
+  });
+
+  assert.match(output, /Clawdeck support/);
+  assert.match(output, /https:\/\/nicdunz\.gumroad\.com\/l\/smrimu/);
+  assert.match(output, /MIT-licensed/);
 });
 
 test("boolean flags do not consume following positional arguments", async () => {

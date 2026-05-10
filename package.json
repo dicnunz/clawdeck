@@ -43,6 +43,10 @@
     "type": "git",
     "url": "git+https://github.com/dicnunz/clawdeck.git"
   },
+  "funding": {
+    "type": "custom",
+    "url": "https://nicdunz.gumroad.com/l/smrimu"
+  },
   "bugs": {
     "url": "https://github.com/dicnunz/clawdeck/issues"
   },
