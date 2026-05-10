@@ -1,6 +1,6 @@
 {
   "name": "@nicdunz/clawdeck",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Local-model mode for existing OpenClaw and Codex workspaces.",
   "type": "module",
   "bin": {
