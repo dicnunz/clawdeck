@@ -8,6 +8,10 @@ Once OpenClaw, Ollama, and the model weights are installed, local file/code work
 
 If Clawdeck saves you setup time, the smallest support path is the $5 Codex run receipt: <https://nicdunz.gumroad.com/l/smrimu>.
 
+If you need reusable browser/account/public-action control templates instead of a setup audit, use the self-serve $39 Agent Browser Operator OS kit: <https://nicdunz.gumroad.com/l/agent-browser-operator-os>.
+
+That kit is for lanes, approvals, proof capture, handoffs, and go/no-go checks. It does not fix the Codex Chrome plugin, guarantee browser automation, provide account access, include custom setup, or include calls.
+
 If you want a written no-call setup audit for a redacted OpenClaw/Codex/Ollama workspace, use the paid setup audit path:
 
 - Mini audit: <https://nicdunz.gumroad.com/l/agent-workflow-mini-audit>
@@ -91,7 +95,7 @@ clawdeck support
 
 `handoff` prints a compact brief you can paste into Codex Mac app so Codex uses the same `CLAWDECK.md` local-mode contract instead of treating the folder as a random repo.
 
-`support` prints the optional $5 paid support receipt link plus no-call setup audit paths for npm users who want written OpenClaw/Codex/Ollama setup review.
+`support` prints the optional $5 paid support receipt link, the self-serve Agent Browser Operator OS kit route, and no-call setup audit paths for npm users who want written OpenClaw/Codex/Ollama setup review.
 
 ## Example Output
 

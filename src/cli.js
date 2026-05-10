@@ -11,6 +11,7 @@ import { buildHandoff, formatHandoffCli } from "./handoff.js";
 import { formatSetupCli, runSetup } from "./setup.js";
 
 const SUPPORT_URL = "https://nicdunz.gumroad.com/l/smrimu";
+const OPERATOR_KIT_URL = "https://nicdunz.gumroad.com/l/agent-browser-operator-os";
 const MINI_AUDIT_URL = "https://nicdunz.gumroad.com/l/agent-workflow-mini-audit";
 const WORKFLOW_AUDIT_URL = "https://nicdunz.gumroad.com/l/agent-workflow-audit";
 
@@ -50,6 +51,11 @@ const SUPPORT = `Clawdeck support
 
 If Clawdeck saved you setup time, the smallest paid support path is the $5 Codex run receipt:
 ${SUPPORT_URL}
+
+For self-serve browser/account/public-action control templates:
+- Agent Browser Operator OS ($39): ${OPERATOR_KIT_URL}
+
+Use the kit for lanes, approvals, proof capture, handoffs, and go/no-go checks. It does not fix the Codex Chrome plugin, guarantee browser automation, provide account access, include custom setup, or include calls.
 
 For a written no-call setup audit of a redacted OpenClaw/Codex/Ollama workspace:
 - Mini audit: ${MINI_AUDIT_URL}

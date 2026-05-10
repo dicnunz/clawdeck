@@ -36,6 +36,13 @@ test("support prints the optional paid support receipt link", async () => {
 
   assert.match(output, /Clawdeck support/);
   assert.match(output, /https:\/\/nicdunz\.gumroad\.com\/l\/smrimu/);
+  assert.match(output, /https:\/\/nicdunz\.gumroad\.com\/l\/agent-browser-operator-os/);
+  assert.match(output, /lanes, approvals, proof capture, handoffs, and go\/no-go checks/);
+  assert.match(output, /does not fix the Codex Chrome plugin/);
+  assert.match(output, /guarantee browser automation/);
+  assert.match(output, /provide account access/);
+  assert.match(output, /custom setup/);
+  assert.match(output, /calls/);
   assert.match(output, /https:\/\/nicdunz\.gumroad\.com\/l\/agent-workflow-mini-audit/);
   assert.match(output, /https:\/\/nicdunz\.gumroad\.com\/l\/agent-workflow-audit/);
   assert.match(output, /redacted files and public repo links only/);

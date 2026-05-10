@@ -1,6 +1,6 @@
 {
   "name": "@nicdunz/clawdeck",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Local-model mode for existing OpenClaw and Codex workspaces.",
   "type": "module",
   "bin": {
@@ -37,16 +37,33 @@
     "local-first",
     "ai-agent",
     "agent-audit",
+    "browser-ops",
+    "approval-workflows",
+    "operator-kit",
     "cli"
   ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dicnunz/clawdeck.git"
   },
-  "funding": {
-    "type": "custom",
-    "url": "https://nicdunz.gumroad.com/l/smrimu"
-  },
+  "funding": [
+    {
+      "type": "custom",
+      "url": "https://nicdunz.gumroad.com/l/smrimu"
+    },
+    {
+      "type": "custom",
+      "url": "https://nicdunz.gumroad.com/l/agent-browser-operator-os"
+    },
+    {
+      "type": "custom",
+      "url": "https://nicdunz.gumroad.com/l/agent-workflow-mini-audit"
+    },
+    {
+      "type": "custom",
+      "url": "https://nicdunz.gumroad.com/l/agent-workflow-audit"
+    }
+  ],
   "bugs": {
     "url": "https://github.com/dicnunz/clawdeck/issues"
   },

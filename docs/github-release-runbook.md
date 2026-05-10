@@ -10,7 +10,7 @@ Do not run these commands without fresh approval from the repo owner.
 - working tree: clean
 - GitHub account: `dicnunz`
 - GitHub repo: `dicnunz/clawdeck` already exists and is public
-- release version: `v0.1.3`
+- release version: `v0.1.5`
 - npm package: `@nicdunz/clawdeck`
 - local verification: `npm run verify`
 
@@ -20,8 +20,8 @@ Do not run these commands without fresh approval from the repo owner.
 npm run verify
 
 git push origin main
-git tag v0.1.3
-git push origin v0.1.3
+git tag v0.1.5
+git push origin v0.1.5
 
 gh repo edit dicnunz/clawdeck \
   --add-topic openclaw \
@@ -34,10 +34,10 @@ gh repo edit dicnunz/clawdeck \
   --add-topic cli \
   --add-topic nodejs
 
-gh release create v0.1.3 \
+gh release create v0.1.5 \
   --repo dicnunz/clawdeck \
-  --title "Clawdeck v0.1.3" \
-  --notes-file docs/release-notes/v0.1.3.md
+  --title "Clawdeck v0.1.5" \
+  --notes-file docs/release-notes/v0.1.5.md
 
 npm publish --access public
 ```
@@ -46,7 +46,7 @@ npm publish --access public
 
 ```bash
 gh repo view dicnunz/clawdeck --json nameWithOwner,visibility,url,description
-gh release view v0.1.3 --repo dicnunz/clawdeck --json tagName,url,name
+gh release view v0.1.5 --repo dicnunz/clawdeck --json tagName,url,name
 npm view @nicdunz/clawdeck version
 npx @nicdunz/clawdeck help
 ```
