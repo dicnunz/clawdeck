@@ -8,6 +8,13 @@ Once OpenClaw, Ollama, and the model weights are installed, local file/code work
 
 If Clawdeck saves you setup time, the smallest support path is the $5 Codex run receipt: <https://nicdunz.gumroad.com/l/smrimu>.
 
+If you want a written no-call setup audit for a redacted OpenClaw/Codex/Ollama workspace, use the paid setup audit path:
+
+- Mini audit: <https://nicdunz.gumroad.com/l/agent-workflow-mini-audit>
+- Full workflow audit: <https://nicdunz.gumroad.com/l/agent-workflow-audit>
+
+Redacted files and public repo links only. Do not paste tokens, secrets, private transcripts, auth files, raw provider credentials, or personal data. No call required.
+
 ## Quick Start
 
 Adopt the OpenClaw workspace you already have:
@@ -84,7 +91,7 @@ clawdeck support
 
 `handoff` prints a compact brief you can paste into Codex Mac app so Codex uses the same `CLAWDECK.md` local-mode contract instead of treating the folder as a random repo.
 
-`support` prints the optional $5 paid support receipt link from the CLI for npm users who want it.
+`support` prints the optional $5 paid support receipt link plus no-call setup audit paths for npm users who want written OpenClaw/Codex/Ollama setup review.
 
 ## Example Output
 

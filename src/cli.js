@@ -11,6 +11,8 @@ import { buildHandoff, formatHandoffCli } from "./handoff.js";
 import { formatSetupCli, runSetup } from "./setup.js";
 
 const SUPPORT_URL = "https://nicdunz.gumroad.com/l/smrimu";
+const MINI_AUDIT_URL = "https://nicdunz.gumroad.com/l/agent-workflow-mini-audit";
+const WORKFLOW_AUDIT_URL = "https://nicdunz.gumroad.com/l/agent-workflow-audit";
 
 const HELP = `clawdeck
 
@@ -41,13 +43,19 @@ Commands:
   handoff   Print a Codex Mac app local-mode handoff brief.
   doctor    Check Node, OpenClaw, Ollama, gateway, and local config health.
   snapshot  Write a redacted OpenClaw setup snapshot safe to share.
-  support   Print the optional $5 paid support receipt link.
+  support   Print optional support and no-call setup audit links.
 `;
 
 const SUPPORT = `Clawdeck support
 
 If Clawdeck saved you setup time, the smallest paid support path is the $5 Codex run receipt:
 ${SUPPORT_URL}
+
+For a written no-call setup audit of a redacted OpenClaw/Codex/Ollama workspace:
+- Mini audit: ${MINI_AUDIT_URL}
+- Full workflow audit: ${WORKFLOW_AUDIT_URL}
+
+Boundary: redacted files and public repo links only. No tokens, secrets, private transcripts, auth files, raw provider credentials, personal data, or calls.
 
 This is optional. Clawdeck remains MIT-licensed.
 `;

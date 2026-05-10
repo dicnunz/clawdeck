@@ -36,6 +36,10 @@ test("support prints the optional paid support receipt link", async () => {
 
   assert.match(output, /Clawdeck support/);
   assert.match(output, /https:\/\/nicdunz\.gumroad\.com\/l\/smrimu/);
+  assert.match(output, /https:\/\/nicdunz\.gumroad\.com\/l\/agent-workflow-mini-audit/);
+  assert.match(output, /https:\/\/nicdunz\.gumroad\.com\/l\/agent-workflow-audit/);
+  assert.match(output, /redacted files and public repo links only/);
+  assert.match(output, /No tokens/);
   assert.match(output, /MIT-licensed/);
 });
 
